@@ -54,12 +54,9 @@ def local_css(file_name):
 local_css("style.css")
 ###########################################
 
-selected = st.text_input("", "Paste your bbc.co.uk recipe link here!")
-
-print(selected)
+url = st.text_input("", "Paste your bbc.co.uk recipe link here!")
 
 status_text = st.empty()
-#url = "https://www.google.com.tr/search?q="
 
 if st.button('Go!'):
     progress_bar = st.progress(0)
@@ -69,7 +66,14 @@ if st.button('Go!'):
     status_text.text(
         'Fetching your recipe...')
     time.sleep(.02)
-    webbrowser.open_new_tab(selected)
+
+    try:
+        ghg = main_calculation.calculate(url)
+    except:
+        ghg = 'over 9000'
+
+    st.title(f'This recipe has an estimated environmental impact of {ghg} kilos of CO2')
+
 
 
 

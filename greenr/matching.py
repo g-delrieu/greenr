@@ -28,13 +28,10 @@ import os.path
 
 import wikipedia
 
-import sys
-sys.setrecursionlimit(1000000)
-
 # Load some data, define some values
 
 vectorizer = cPickle.load(open('vectorizer.pk', 'rb'))
-df_wiki_similarities = pd.read_pickle('df_wiki_similarities.pk')
+df_wiki_similarities = cPickle.load(open('df_wiki_similarities.pk', 'rb'))
 
 catsums = df_wiki_similarities['summaries'][:45]
 cats = list(df_wiki_similarities[df_wiki_similarities['ingr/cat'] == 'cat']
