@@ -1,16 +1,17 @@
 import pandas as pd
-import app.parser_scraper
-import app.matching
-import app.calculator
 
-def Calculate(url):
+import scraper_parser
+import matching
+import calculator
 
-    df_parsed = parser_scraper.url_to_df(url)
+def calculate(url):
+
+    df_parsed = scraper_parser.url_to_df(url)
 
     categories = matching.get_categories(df_parsed, try_google = True)
 
     df_parsed['names'] = categories
 
-    GHG_impact = calculator.ghg_calc(df_parsed)
+    ghg_impact = calculator.ghg_calc(df_parsed)
 
-    Return GHG_impact
+    return ghg_impact

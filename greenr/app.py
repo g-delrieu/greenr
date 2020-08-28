@@ -5,7 +5,8 @@ import pandas as pd
 import time
 import webbrowser
 import base64
-import app.main_calculation
+
+import main_calculation
 
 ###########################################
 st.text('')
