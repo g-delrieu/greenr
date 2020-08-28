@@ -223,7 +223,7 @@ def get_categories(df_parser_output, try_google=False):
         if cat == 'Onions & leeks':
             matched_categories[i] = 'Onions & Leeks'
 
-        if cat == 'Berries & grapes2':
+        if cat == 'Berries & Grapes2':
             matched_categories[i] = 'Berries & Grapes'
 
     return matched_categories
