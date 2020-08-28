@@ -28,10 +28,18 @@ import os.path
 
 import wikipedia
 
+import sys
+sys.setrecursionlimit(1000000)
+
 # Load some data, define some values
 
 vectorizer = cPickle.load(open('vectorizer.pk', 'rb'))
-df_wiki_similarities = cPickle.load(open('df_wiki_similarities.pk', 'rb'))
+df_wiki_similarities = pd.read_pickle('df_wiki_similarities.pk')
+
+catsums = df_wiki_similarities['summaries'][:45]
+cats = list(df_wiki_similarities[df_wiki_similarities['ingr/cat'] == 'cat']
+            ['ingredient'])
+catvectors = vectorizer.transform(catsums)
 
 api_key = "AIzaSyB1AJ_3w-Yq1GhrkqQ6ZfSlASeeCRjT2Ns"
 cse_id = "dd94ab4664d1ce589"
@@ -136,11 +144,6 @@ def pre_process_summary(summary):
     summary = ' '.join(summary)
 
     return summary
-
-catsums = df_wiki_similarities['summaries'][:45]
-cats = list(df_wiki_similarities[df_wiki_similarities['ingr/cat'] == 'cat']
-            ['ingredient'])
-catvectors = vectorizer.transform(catsums)
 
 def get_match_and_score(summary_vector):
 

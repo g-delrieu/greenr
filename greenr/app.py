@@ -12,6 +12,9 @@ import main_calculation
 st.text('')
 st.text('')
 st.text('')
+st.text('')
+st.text('')
+st.text('')
 st.title('GREENR!')
 st.subheader(' A click closer to a greener plate')
 
@@ -51,24 +54,22 @@ def local_css(file_name):
 local_css("style.css")
 ###########################################
 
-selected = st.text_input("", " ")
+selected = st.text_input("", "Paste your bbc.co.uk recipe link here!")
 
 print(selected)
 
-progress_bar = st.progress(0)
 status_text = st.empty()
-url = "https://www.google.com.tr/search?q="
-
+#url = "https://www.google.com.tr/search?q="
 
 if st.button('Go!'):
-    print('I clicked the button, and I liked it')
+    progress_bar = st.progress(0)
+
     for i in range(100):
         progress_bar.progress(i + 1)
-        time.sleep(.02)
     status_text.text(
         'Fetching your recipe...')
     time.sleep(.02)
-    webbrowser.open_new_tab(url + selected)
+    webbrowser.open_new_tab(selected)
 
 
 
