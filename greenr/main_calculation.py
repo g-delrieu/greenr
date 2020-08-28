@@ -7,10 +7,9 @@ import calculator
 def calculate(url):
 
     df_parsed = scraper_parser.url_to_df(url)
-    print(df_parsed)
+
 
     categories = matching.get_categories(df_parsed, try_google = True)
-    print(categories)
 
     df_parsed['name'] = categories
 
