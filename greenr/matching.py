@@ -1,0 +1,224 @@
+# Import some packages
+
+import _pickle as cPickle
+import string
+import pandas as pd
+import numpy as np
+import scipy
+from scipy import spatial
+
+from bs4 import BeautifulSoup
+import urllib.parse
+import urllib.request
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+from googleapiclient.discovery import build
+import os.path
+
+import wikipedia
+
+# Load some data, define some values
+
+vectorizer = cPickle.load(open('vectorizer.pk', 'rb'))
+df_wiki_similarities = cPickle.load(open('df_wiki_similarities.pk', 'rb'))
+
+api_key = "AIzaSyB1AJ_3w-Yq1GhrkqQ6ZfSlASeeCRjT2Ns"
+cse_id = "dd94ab4664d1ce589"
+
+similarity_cutoff = 0.1
+no_match = 'No match found'
+
+# Define some utility functions
+
+def is_ingredient_in_wikidata(ingredient):
+    found = ingredient in list(df_wiki_similarities.ingredient)
+    return found
+
+def get_wiki_match(ingredient):
+
+    i_ix = list(df_wiki_similarities.ingredient).index(ingredient)
+
+    chosen_summ = df_wiki_similarities.summaries[i_ix]
+
+    sims = df_wiki_similarities.iloc[i_ix, 4:]
+
+    c_ix = pd.to_numeric(sims).argmax()
+
+    ingredient = df_wiki_similarities['ingredient'][i_ix]
+    category = df_wiki_similarities['ingredient'][c_ix]
+
+    return category, max(sims)
+
+def google_query(query, api_key, cse_id, **kwargs):
+
+    query_service = build("customsearch", "v1", developerKey=api_key)
+    query_results = query_service.cse().list(q=query, cx=cse_id,
+                                             **kwargs).execute()
+
+    return query_results['items']
+
+
+def get_google_cse_result(ingredient):
+
+    query = f'{ingredient} food'
+
+    my_results = google_query(query, api_key, cse_id, num=1)[0]
+
+    url = my_results['link']
+    url_base = os.path.basename(my_results['link'])
+
+    return ingredient, url, url_base
+
+def get_pageid_from_base(base):
+
+    info_url = f'https://en.wikipedia.org/w/index.php?title={base}&action=info'
+
+    req = urllib.request.Request(info_url)
+    req.add_header('Cookie', 'euConsent=true')
+    html_content = urllib.request.urlopen(req).read()
+    soup = BeautifulSoup(html_content, 'html.parser')
+
+    infosection = soup.find("script")
+    pageid = infosection.decode().partition('wgArticleId":')[2].partition(
+        ',')[0]
+
+    return pageid
+
+def get_summary_from_id(pageid):
+
+    pagesummary = wikipedia.page(pageid=pageid).summary
+
+    return pagesummary
+
+def pre_process_summary(summary):
+
+    # Remove punctuation
+    for punctuation in string.punctuation:
+        summary = str(summary).replace(punctuation, '')
+
+    # Lower text
+    summary = summary.lower()
+
+    # Stopwords
+    stop_words = set(stopwords.words('english'))
+    summary_tokenized = word_tokenize(summary)
+    text = [w for w in summary_tokenized if not w in stop_words]
+    summary = ' '.join(text)
+
+    # Remove digits
+    summary = ''.join([word for word in summary if not word.isdigit()])
+
+    # Lemmatize
+    lemmatizer = WordNetLemmatizer()
+
+    summary = ' '.join([lemmatizer.lemmatize(word) for word in summary.split(' ')])
+
+    # Keep only nouns
+    tokens = summary.split()
+    tags = nltk.pos_tag(tokens)
+
+    summary = [
+        word for word, pos in tags
+        if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS')
+    ]
+
+    summary = ' '.join(summary)
+
+    return summary
+
+catsums = list(df_wiki_similarities[df_wiki_similarities['ingr/cat'] == 'cat']
+               ['summaries'])
+cats = list(df_wiki_similarities[df_wiki_similarities['ingr/cat'] == 'cat']
+            ['ingredient'])
+catvectors = vectorizer.transform(catsums)
+
+
+def get_match_and_score(summary_vector):
+
+    scoreseries = []
+
+    for j, catsum in enumerate(catsums):
+
+        cosine_sum = 1 - spatial.distance.cosine(summary_vector.toarray(),
+                                                 catvectors[j, :].toarray())
+
+        scoreseries.append(cosine_sum)
+
+    matchscore = max(scoreseries)
+    match = cats[scoreseries.index(matchscore)]
+
+    return match, matchscore
+
+def get_google_match(ingredient):
+
+    try:
+        ingredient, url, url_base = get_google_cse_result(ingredient)
+    except:
+        return 'nomatch', 0
+
+    pageid = get_pageid_from_base(url_base)
+
+    pagesummary = get_summary_from_id(pageid)
+
+    processed_summary = pre_process_summary(pagesummary)
+
+    summary_vector = vectorizer.transform([processed_summary])
+
+    match, matchscore = get_match_and_score(summary_vector)
+
+    return match, matchscore
+
+# Define the matching function
+
+def get_categories(df_parser_output, try_google=False):
+
+    matched_categories = []
+
+    list_of_ingredients = list(df_parser_output['name'])
+
+    for ingredient in list_of_ingredients:
+
+        if is_ingredient_in_wikidata(ingredient):
+
+            wikimatch, score = get_wiki_match(ingredient)
+
+            if score > similarity_cutoff:
+                match = wikimatch
+
+            elif try_google:
+                googlematch, score = get_google_match(ingredient)
+                if score > similarity_cutoff:
+                    match = googlematch
+                else:
+                    match = no_match
+
+            else:
+                match = no_match
+
+        elif try_google:
+
+            googlematch, score = get_google_match(ingredient)
+
+            if score > similarity_cutoff:
+                match = googlematch
+
+            else:
+                match = no_match
+
+        else:
+            match = no_match
+
+        matched_categories.append(match)
+
+    return matched_categories

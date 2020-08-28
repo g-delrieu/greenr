@@ -5,8 +5,9 @@ import pandas as pd
 import time
 import webbrowser
 import base64
+import app.main_calculation
 
-###########################################   
+###########################################
 st.text('')
 st.text('')
 st.text('')
@@ -32,7 +33,7 @@ def set_png_as_page_bg(png_file):
     }
     </style>
     ''' % bin_str
-    
+
     st.markdown(page_bg_img, unsafe_allow_html=True)
     return
 
@@ -44,7 +45,7 @@ def local_css(file_name):
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 #def remote_css(url):
-#    st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)    
+#    st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
 
 local_css("style.css")
 ###########################################
@@ -52,7 +53,7 @@ local_css("style.css")
 selected = st.text_input("", " ")
 progress_bar = st.progress(0)
 status_text = st.empty()
-#url = "https://www.google.com.tr/search?q="
+url = "https://www.google.com.tr/search?q="
 
 
 if st.button('Go!'):
@@ -60,14 +61,14 @@ if st.button('Go!'):
     for i in range(100):
         progress_bar.progress(i + 1)
         time.sleep(.02)
-    status_text.text( 
+    status_text.text(
         'Fetching your recipe...')
     time.sleep(.02)
     webbrowser.open_new_tab(url + selected)
-    
 
 
 
 
-    
+
+
 

@@ -24,8 +24,6 @@ def get_ingredients_url(url):
 
     return ingredient
 
-
-
 def url_to_df(url):
 
     recipe = get_ingredients_url(url)
