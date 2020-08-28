@@ -67,10 +67,7 @@ if st.button('Go!'):
         'Fetching your recipe...')
     time.sleep(.02)
 
-    try:
-        ghg = main_calculation.calculate(url)
-    except:
-        ghg = 'over 9000'
+    ghg = main_calculation.calculate(url)
 
     st.title(f'This recipe has an estimated environmental impact of {ghg} kilos of CO2')
 

@@ -67,7 +67,7 @@ def get_wiki_match(ingredient):
 
 def google_query(query, api_key, cse_id, **kwargs):
 
-    query_service = build("customsearch", "v1", developerKey=api_key)
+    query_service = build("customsearch", "v1", developerKey=api_key, cache_discovery = False)
     query_results = query_service.cse().list(q=query, cx=cse_id,
                                              **kwargs).execute()
 

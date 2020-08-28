@@ -59,7 +59,7 @@ def url_to_df(url):
 
     #running in the model
 
-        parsed_ingredient = subprocess.check_output(f"echo {ingredient} | parsing_tools/parse-ingredients.py --model-file parsing_tools/20200825_0846-nyt-ingredients-snapshot-2015-461547e.crfmodel", shell=True)
+        parsed_ingredient = subprocess.check_output(f"echo {ingredient} | ../parsing_tools/parse-ingredients.py --model-file ../parsing_tools/20200825_0846-nyt-ingredients-snapshot-2015-461547e.crfmodel", shell=True)
         parsed_ingredient = json.loads(parsed_ingredient)
 
 
