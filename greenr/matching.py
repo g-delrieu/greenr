@@ -219,4 +219,11 @@ def get_categories(df_parser_output, try_google=False):
 
         matched_categories.append(match)
 
+    for i,cat in matched_categories:
+        if cat == 'Onions & leeks':
+            matched_categories[i] = 'Onions & Leeks'
+
+        if cat == 'Berries & grapes2':
+            matched_categories[i] = 'Berries & Grapes'
+
     return matched_categories
