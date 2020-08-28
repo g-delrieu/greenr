@@ -52,13 +52,16 @@ local_css("style.css")
 ###########################################
 
 selected = st.text_input("", " ")
+
+print(selected)
+
 progress_bar = st.progress(0)
 status_text = st.empty()
 url = "https://www.google.com.tr/search?q="
 
 
 if st.button('Go!'):
-    #print('I clicked the button, and I liked it')
+    print('I clicked the button, and I liked it')
     for i in range(100):
         progress_bar.progress(i + 1)
         time.sleep(.02)

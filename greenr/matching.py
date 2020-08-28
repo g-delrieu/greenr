@@ -137,12 +137,10 @@ def pre_process_summary(summary):
 
     return summary
 
-catsums = list(df_wiki_similarities[df_wiki_similarities['ingr/cat'] == 'cat']
-               ['summaries'])
+catsums = df_wiki_similarities['summaries'][:45]
 cats = list(df_wiki_similarities[df_wiki_similarities['ingr/cat'] == 'cat']
             ['ingredient'])
 catvectors = vectorizer.transform(catsums)
-
 
 def get_match_and_score(summary_vector):
 
