@@ -1,5 +1,3 @@
-
-
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -23,8 +21,6 @@ def get_ingredients_url(url):
 
 
     return ingredient
-
-
 
 def url_to_df(url):
 
