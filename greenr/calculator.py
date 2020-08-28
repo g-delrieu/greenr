@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 data = pd.read_csv('data/Final_conversion_table.csv')
 
@@ -8,24 +9,26 @@ data = data.set_index('name')
 
 def ghg_calc(df):
     impact = []
+    df = df.reset_index()
     for i in range(len(df.unit)):
 
-        if df.qty[i].isdigit() and df.name[i] != 'No match found':
+
+        if str(df.qty[i]).replace(".", "", 1).isdigit() and df.name[i] != 'No match found':
             if df.unit[i] == 'tablespoon':
-                impact.append(df.qty[i]*data.tablespoon[df.name[i]]*data.ghg[df.name[i]])
+                impact.append(float(df.qty[i])*float(data.tablespoon[df.name[i]])*float(data.ghg[df.name[i]]))
             elif df.unit[i] == 'unit':
-                impact.append(df.qty[i]*data.unit[df.name[i]]*data.ghg[df.name[i]])
+                impact.append(float(df.qty[i])*float(data.unit[df.name[i]])*float(data.ghg[df.name[i]]))
             elif df.unit[i] == 'gram':
-                impact.append((float(df.qty[i])/1000)*data.unit[df.name[i]]*data.ghg[df.name[i]])
+                impact.append((float(df.qty[i])/1000)*float(data.ghg[df.name[i]]))
             elif df.unit[i] == 'milliliter':
-                impact.append((float(df.qty[i])/1000)*data.unit[df.name[i]]*data.ghg[df.name[i]])
+                impact.append((float(df.qty[i])/1000*float(data.ghg[df.name[i]])))
             elif df.unit[i] == 'kilogram':
-                impact.append(df.qty[i]*data.ghg[df.name[i]])
+                impact.append(float(df.qty[i])*float(data.ghg[df.name[i]]))
             elif df.unit[i] == 'liter':
-                impact.append(df.qty[i]*data.ghg[df.name[i]])
+                impact.append(float(df.qty[i])*float(data.ghg[df.name[i]]))
             else:
                 impact.append(0)
         else:
             impact.append(0)
-
+        #import pdb; pdb.set_trace()
     return sum(impact)
