@@ -10,3 +10,4 @@ groupama/data/base_pno.*
 .DS_Store
 .idea/
 /raw_data/
+/greenr/api_key.pk
