@@ -11,3 +11,4 @@ groupama/data/base_pno.*
 .idea/
 /raw_data/
 /greenr/api_key.pk
+/notebooks/
