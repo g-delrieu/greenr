@@ -1,3 +1,3 @@
 
-web: streamlit run greenr/app.py
+worker: streamlit run greenr/app.py
 
