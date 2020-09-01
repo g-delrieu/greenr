@@ -5,6 +5,8 @@ import pandas as pd
 import time
 import webbrowser
 import base64
+import altair as alt
+
 
 import main_calculation
 
@@ -62,11 +64,13 @@ def local_css(file_name):
 local_css("style.css")
 ###########################################
 
-url = st.text_input("", "Paste your bbc.co.uk recipe link here!")
+url = st.text_input("", "https://www.bbc.co.uk/food/recipes/bean_chilli_with_43184")
 
 status_text = st.empty()
 
 if st.button('Go!'):
+
+    # Progress bar
     progress_bar = st.progress(0)
 
     for i in range(100):
@@ -75,9 +79,31 @@ if st.button('Go!'):
         'Fetching your recipe...')
     time.sleep(.2)
 
-    ghg = main_calculation.calculate(url)
+    # Calling main calculation function
+    ghg_sum, df_parsed = main_calculation.calculate(url)
 
-    st.title(f'This recipe has an estimated environmental impact of {ghg} kilos of CO2')
+    # Showing main result
+    st.title(f'This recipe has an estimated environmental impact of {ghg_sum} kilos of CO2')
+
+    # Defining chart data and showing chart
+    df_parsed['X'] = df_parsed['qty'].astype(str) + ' ' + df_parsed['unit'] + ' ' + df_parsed['name'] + " (" + df_parsed['category'] + ")"
+
+    chart = alt.Chart(df_parsed).mark_bar().encode(
+    x = 'impact:Q',
+    y = "X:O"
+    )
+
+    text = chart.mark_text(
+    align='left',
+    baseline='middle',
+    dx=3  # Nudges text to right so it doesn't appear on top of the bar
+    ).encode(
+    text='impact:Q'
+    )
+
+    chart = (chart + text).properties(width=700, height = 400).configure_axis(labelLimit=1000)
+
+    st.altair_chart(chart)
 
 
 

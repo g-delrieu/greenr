@@ -10,8 +10,10 @@ def calculate(url):
 
     categories = matching.get_categories(df_parsed, try_google = True)
 
-    df_parsed['name'] = categories
+    df_parsed['category'] = categories
 
-    ghg_impact = calculator.ghg_calc(df_parsed)
+    ghg_impact_sum, impact_list = calculator.ghg_calc(df_parsed)
 
-    return round(ghg_impact/int(servingsize),1)
+    df_parsed['impact'] = impact_list
+
+    return round(ghg_impact_sum/int(servingsize),1), df_parsed
