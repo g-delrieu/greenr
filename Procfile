@@ -1,3 +1,3 @@
 
-worker: streamlit run greenr/app.py
+web: sh setup.sh && streamlit run greenr/app.py
 
