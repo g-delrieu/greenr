@@ -1,0 +1,106 @@
+,Food,unit,weight,clean_quantity,clean_weight,unit_weight
+0,Eggs,unit,50,1.0,50.0,50.0
+1,"Eggs, yolks",unit,17,1.0,17.0,17.0
+2,Butter,T.,14,1.0,14.0,14.0
+3,Margarine, T.,14,1.0,14.0,14.0
+4,Mayonnaise, T.,15,1.0,15.0,15.0
+5,Corn Oil, T.,14,1.0,14.0,14.0
+6,Walnut Oil, T.,14,1.0,14.0,14.0
+7,Soybean Oil, T.,14,1.0,14.0,14.0
+8,Palm Oil, T.,14,1.0,14.0,14.0
+9,Sunflower Oil, T.,14,1.0,14.0,14.0
+10,Rapeseed Oil, T.,14,1.0,14.0,14.0
+11,Olive Oil, T.,14,1.0,14.0,14.0
+12,Salad dressing, T.,15,1.0,15.0,15.0
+13,"Bacon, crisp, drained", slices,16,2.0,16.0,8.0
+14,"Pot-pie, 4 1/2"" diameter", pie,227,1.0,227.0,227.0
+15,"Chicken livers, fried", med.,100,3.0,100.0,33.333333333333336
+16,fried,unit,112,5.0,112.0,22.4
+17,"Herring, kippered", small,100,1.0,100.0,100.0
+18,"Lobster, steamed",aver.,100,0.0,100.0,inf
+19,"Oysters, raw", med.,,68.0,,
+20,or 1/2 cup,unit,85,120.0,85.0,0.7083333333333334
+21,"Swordfish, broiled", steak,100,1.0,100.0,100.0
+22,"Raw, 2 by 2 1/2", med.,150,1.0,150.0,150.0
+23,Tomato catsup, T.,17,1.0,17.0,17.0
+24,"Onions, mature cooked",unit,210,1.0,210.0,210.0
+25,"Onions, Raw, green", small,50,6.0,50.0,8.333333333333334
+26,"Strips, from raw", mad.,50,1.0,50.0,50.0
+27,"Potatoes, baked", med.,100,1.0,100.0,100.0
+28,French-fried, pieces,60,10.0,60.0,6.0
+29,Steamed before peeling, med.,100,1.0,100.0,100.0
+30,Potato chips,unit,20,10.0,20.0,2.0
+31,"Radishes, raw", small,50,5.0,50.0,10.0
+32,"Sweet potatoes, baked", med.,110,1.0,110.0,110.0
+33,Artichoke, large,100,1.0,100.0,100.0
+34,Asparagus, spears,96,6.0,96.0,16.0
+35,Stalk raw, large,40,1.0,40.0,40.0
+36,"Corn, steamed,", ear,100,1.0,100.0,100.0
+37,"Cucumbers, 1/8"" slices",unit,50,8.0,50.0,6.25
+38,"Lettuce, loose leaf, green", head,100,0.25,100.0,400.0
+39,Iceberg, head,100,0.25,100.0,400.0
+40,"Mushrooms, cooked or canned",unit,120,4.0,120.0,30.0
+41,"Mustard greens, steamed",unit,140,1.0,140.0,140.0
+42,Parsley, T.,50,2.0,50.0,25.0
+43,Peppers, large,100,1.0,100.0,100.0
+44,"3"" diameter", med.,180,1.0,180.0,180.0
+45,Banana, med.,150,1.0,150.0,150.0
+46,"Apples, raw", med,130,1.0,130.0,130.0
+47,Fresh, med.,114,3.0,114.0,38.0
+48,Avocado, large,108,0.5,108.0,216.0
+49,Cantaloupe, med.,380,0.5,380.0,760.0
+50,"Figs, dried, large, 2"" by 1""",unit,42,2.0,42.0,21.0
+51,"Fresh, raw", med.,114,3.0,114.0,38.0
+52,with syrup,unit,115,3.0,115.0,38.333333333333336
+53,large,unit,65,10.0,65.0,6.5
+54,"Ripe, canned, large",unit,65,10.0,65.0,6.5
+55,"Papaya, fresh", med.,200,0.5,200.0,400.0
+56,"Fresh, raw", med.,114,1.0,114.0,114.0
+57,"Raw, 3 by 2V", med.,182,1.0,182.0,182.0
+58,"Persimmons, Japanese", med.,125,1.0,125.0,125.0
+59,"Pineapple, canned, sliced", large slice,122,1.0,122.0,122.0
+60,"Raw, 2"" diameter",unit,60,1.0,60.0,60.0
+61,"Tangerines, fresh",I med.,114,0.0,114.0,inf
+62,"Watermelon, 4 by 8""", wedge,925,1.0,925.0,925.0
+63,"Biscuits, 2 1/2"" diameters",unit,38,1.0,38.0,38.0
+64,"Bread, cracked wheat", slice,23,1.0,23.0,23.0
+65,Rye, slice,23,1.0,23.0,23.0
+66,Whole-wheat, slice,23,1.0,23.0,23.0
+67,"Crackers, graham", med.,14,2.0,14.0,7.0
+68,"Soda, 2 1/2 square",unit,11,2.0,11.0,5.5
+69,Muffins of refined flour,unit,48,1.0,48.0,48.0
+70,"4"" diam.",unit,108,4.0,108.0,27.0
+71,"4"" diam.",unit,108,4.0,108.0,27.0
+72,"14"" diam.", section,75,1.0,75.0,75.0
+73,"Rolls, breakfast, sweet", large,50,1.0,50.0,50.0
+74,of refined flour,unit,38,1.0,38.0,38.0
+75,whole-wheat,unit,40,1.0,40.0,40.0
+76,Shredded wheat biscuit,unit,28,1.0,28.0,28.0
+77,"Waffles, 1/2"" x 4 1/2"" x 5 1/2""",unit,75,1.0,75.0,75.0
+78,"Cakes, angel food", slice,40,1.0,40.0,40.0
+79,Chocolate fudge w/ icing, slice,120,1.0,120.0,120.0
+80,Cupcake with icing,unit,50,1.0,50.0,50.0
+81,"Fruit cake, 2"" x 2"" x 4""", slice,30,1.0,30.0,30.0
+82,"Gingerbread, 2"" cube", slice,55,1.0,55.0,55.0
+83,"Plain, with no icing", slice,55,1.0,55.0,55.0
+84,"Sponge cake, no icing", slice,40,1.0,40.0,40.0
+85,"Candy, caramels",unit,25,5.0,25.0,5.0
+86,Chocolate creams,unit,30,2.0,30.0,15.0
+87,"Fudge, plain, 1"" x 1""", pieces,90,2.0,90.0,45.0
+88,"Marshmallows, large",unit,30,5.0,30.0,6.0
+89,Chocolate syrup, T.,40,2.0,40.0,20.0
+90,"Doughnuts, cake type",unit,33,1.0,33.0,33.0
+91,"Honey, strained honey, strained", T.,42,2.0,42.0,21.0
+92,preserves, T.,20,1.0,20.0,20.0
+93,Jellies, T.,20,1.0,20.0,20.0
+94,"Molasses, blackstrap", T.,20,1.0,20.0,20.0
+95,"Cane, refined", T.,20,1.0,20.0,20.0
+96,"9"" diam. pie", slice,135,1.0,135.0,135.0
+97,Cherry, slice,135,1.0,135.0,135.0
+98,Custard, slice,130,1.0,130.0,130.0
+99,Lemon meringue, slice,120,1.0,120.0,120.0
+100,Mince, slice,135,1.0,135.0,135.0
+101,Pumpkin, slice,130,1.0,130.0,130.0
+102,3 teaspoons or, T.,12,1.0,12.0,12.0
+103,"Syrup, maple", T.,40,2.0,40.0,20.0
+104,table blends, T.,40,2.0,40.0,20.0
