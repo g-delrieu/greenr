@@ -12,6 +12,10 @@ groupama/data/base_pno.*
 /raw_data/
 /greenr/api_key.pk
 /notebooks/
+<<<<<<< HEAD
 greenr/df_recorded_similarities.pk
 ./
 /ingredient_phrase_tagger
+=======
+/greenr/df_recorded_similarities.pk
+>>>>>>> 413f51c1bb55c2d85ab127198a64b85806f803ff
