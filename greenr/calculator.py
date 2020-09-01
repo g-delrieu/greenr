@@ -12,7 +12,6 @@ def ghg_calc(df):
     df = df.reset_index()
     for i in range(len(df.unit)):
 
-
         if str(df.qty[i]).replace(".", "", 1).isdigit() and df.category[i] != 'No match found':
             if df.unit[i] == 'tablespoon':
                 impact.append(float(df.qty[i])*float(data.tablespoon[df.category[i]])*float(data.ghg[df.category[i]]))

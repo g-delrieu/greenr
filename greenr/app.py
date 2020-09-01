@@ -9,6 +9,7 @@ import altair as alt
 
 
 import main_calculation
+import visualizer
 
 ###########################################
 
@@ -51,7 +52,7 @@ def set_png_as_page_bg(png_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
     return
 
-set_png_as_page_bg('background.png')
+#set_png_as_page_bg('background.png')
 ###########################################
 
 def local_css(file_name):
@@ -64,7 +65,7 @@ def local_css(file_name):
 local_css("style.css")
 ###########################################
 
-url = st.text_input("", "https://www.bbc.co.uk/food/recipes/bean_chilli_with_43184")
+url = st.text_input("", "https://www.bbc.co.uk/food/recipes/caribbean_roast_chicken_45833")
 
 status_text = st.empty()
 
@@ -85,30 +86,6 @@ if st.button('Go!'):
     # Showing main result
     st.title(f'This recipe has an estimated environmental impact of {ghg_sum} kilos of CO2')
 
-    # Defining chart data and showing chart
-    df_parsed['X'] = df_parsed['qty'].astype(str) + ' ' + df_parsed['unit'] + ' ' + df_parsed['name'] + " (" + df_parsed['category'] + ")"
-
-    chart = alt.Chart(df_parsed).mark_bar().encode(
-    x = 'impact:Q',
-    y = "X:O"
-    )
-
-    text = chart.mark_text(
-    align='left',
-    baseline='middle',
-    dx=3  # Nudges text to right so it doesn't appear on top of the bar
-    ).encode(
-    text='impact:Q'
-    )
-
-    chart = (chart + text).properties(width=700, height = 400).configure_axis(labelLimit=1000)
-
-    st.altair_chart(chart)
-
-
-
-
-
-
-
-
+    # Fetching and showing chart
+    plt = visualizer.piechart(df_parsed)
+    st.pyplot(plt)

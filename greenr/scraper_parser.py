@@ -197,9 +197,12 @@ def parse_recipe_ingredients(ingredient_list):
 
 
     final_df = pd.DataFrame(list(zip(qtys, units, names)), columns = ['qty', 'unit', 'name'])
+
     final_df = final_df[final_df['name'].notna()]
     final_df = final_df[final_df['unit'].notna()]
-    final_df = final_df[final_df['unit'] != 'teaspoon']
+
+    final_df.loc[final_df['unit'] == 'teaspoon', 'qty'] = 0
+    final_df.loc[final_df['unit'] == 'teaspoon', 'unit'] = 'gram'
 
     return final_df
 
@@ -208,4 +211,6 @@ def url_to_df(url):
 
     ingredient_list, servingsize = get_ingredients_url(url)
 
-    return parse_recipe_ingredients(ingredient_list), servingsize
+    raw_ingredient_list = ingredient_list
+
+    return parse_recipe_ingredients(ingredient_list), servingsize, raw_ingredient_list.split('\n')
