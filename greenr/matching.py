@@ -227,9 +227,12 @@ def update_database(ingredient, match):
 
 ### Define the overall matching function
 
+
 def get_categories(df_parser_output, try_google=False):
 
     matched_categories = []
+
+    print(df_parser_output['name'])
 
     list_of_ingredients = list(df_parser_output['name'])
 

@@ -35,7 +35,9 @@ def get_ingredients_url(url):
         ingredient += a.get_text()+ '.'
         ingredient += '\n'
 
-    return ingredient
+    servingsize = soup.find('p', class_ = "recipe-metadata__serving").get_text().split(' ')[1]
+
+    return ingredient, servingsize
 
 def sent2labels(sent):
     return [word[-1] for word in sent]
@@ -204,6 +206,6 @@ def parse_recipe_ingredients(ingredient_list):
 
 def url_to_df(url):
 
-    ingredient_list = get_ingredients_url(url)
+    ingredient_list, servingsize = get_ingredients_url(url)
 
-    return parse_recipe_ingredients(ingredient_list)
+    return parse_recipe_ingredients(ingredient_list), servingsize
