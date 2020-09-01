@@ -1,3 +1,3 @@
 
-web: pip install -r requirements.txt && streamlit run greenr/app.py
+web: streamlit run greenr/app.py
 
