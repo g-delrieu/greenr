@@ -32,7 +32,7 @@ import wikipedia
 
 df_recorded_similarities = cPickle.load(
     open('greenr/df_recorded_similarities.pk', 'rb'))
-api_key = cPickle.load(open('/greenr/api_key.pk', 'rb'))
+api_key = cPickle.load(open('greenr/api_key.pk', 'rb'))
 
 with open('greenr/matching_objects.pk', 'rb') as handle:
     matching_objects_dict = cPickle.load(handle)
