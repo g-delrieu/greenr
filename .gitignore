@@ -12,4 +12,4 @@ groupama/data/base_pno.*
 /raw_data/
 /greenr/api_key.pk
 /notebooks/
-/greenr/df_recorded_similarities.pk
+greenr/df_recorded_similarities.pk
