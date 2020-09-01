@@ -13,3 +13,5 @@ groupama/data/base_pno.*
 /greenr/api_key.pk
 /notebooks/
 greenr/df_recorded_similarities.pk
+./
+/ingredient_phrase_tagger
