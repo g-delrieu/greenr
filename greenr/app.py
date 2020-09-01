@@ -49,7 +49,7 @@ def set_png_as_page_bg(png_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
     return
 
-set_png_as_page_bg('background.png')
+set_png_as_page_bg('greenr/background.png')
 ###########################################
 
 def local_css(file_name):
