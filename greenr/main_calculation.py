@@ -6,8 +6,7 @@ import calculator
 
 def calculate(url):
 
-    df_parsed = scraper_parser.url_to_df(url)
-
+    df_parsed, servingsize = scraper_parser.url_to_df(url)
 
     categories = matching.get_categories(df_parsed, try_google = True)
 
@@ -15,4 +14,4 @@ def calculate(url):
 
     ghg_impact = calculator.ghg_calc(df_parsed)
 
-    return ghg_impact
+    return round(ghg_impact/int(servingsize),1)
