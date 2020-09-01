@@ -1,5 +1,7 @@
 mkdir -p ~/.streamlit/
 
+ls
+
 echo $PORT
 
 echo "\
