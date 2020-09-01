@@ -59,7 +59,7 @@ def local_css(file_name):
 #def remote_css(url):
 #    st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
 
-local_css("style.css")
+local_css("greenr/style.css")
 ###########################################
 
 url = st.text_input("", "Paste your bbc.co.uk recipe link here!")
