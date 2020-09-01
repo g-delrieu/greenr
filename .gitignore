@@ -10,3 +10,13 @@ groupama/data/base_pno.*
 .DS_Store
 .idea/
 /raw_data/
+greenr/data/data.csv
+notebooks/Food_Weights.csv
+notebooks/Food_Weights.numbers
+notebooks/Food_Weights.xlsx
+notebooks/Untitled.ipynb
+notebooks/Weight and Volume Conversion.ipynb
+notebooks/clean_ref_ingredients.csv
+notebooks/conversion table (1).ipynb
+notebooks/cuisines_mex_ingredients.csv
+notebooks/florencia_parsing.ipynb
