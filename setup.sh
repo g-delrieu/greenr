@@ -1,5 +1,7 @@
 mkdir -p ~/.streamlit/
 
+echo $PORT
+
 echo "\
 [general]\n\
 email = \"georges.delrieu@laposte.net\"\n\
