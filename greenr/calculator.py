@@ -7,6 +7,7 @@ data = data.drop(['Average tablespoon (grams)', 'Source', 'Average Unit (if appl
 data.columns = ['name','tablespoon','unit','ghg']
 data = data.set_index('name')
 
+
 def ghg_calc(df):
     impact = []
     df = df.reset_index()

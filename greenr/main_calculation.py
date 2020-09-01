@@ -8,7 +8,6 @@ def calculate(url):
 
     df_parsed = scraper_parser.url_to_df(url)
 
-
     categories = matching.get_categories(df_parsed, try_google = True)
 
     df_parsed['name'] = categories
