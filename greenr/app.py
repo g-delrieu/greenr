@@ -9,6 +9,14 @@ import base64
 import main_calculation
 
 ###########################################
+
+st.beta_set_page_config(
+     page_title="Greenr",
+     page_icon="🥦",
+     layout="centered",
+     initial_sidebar_state="collapsed"
+ )
+###########################################
 st.text('')
 st.text('')
 st.text('')
@@ -65,7 +73,7 @@ if st.button('Go!'):
         progress_bar.progress(i + 1)
     status_text.text(
         'Fetching your recipe...')
-    time.sleep(.02)
+    time.sleep(.2)
 
     ghg = main_calculation.calculate(url)
 
