@@ -30,6 +30,7 @@ def main(args):
 
 
 if __name__ == '__main__':
+    import pdb; pdb.set_trace()
     parser = argparse.ArgumentParser(
         prog='Ingredient Phrase Tagger',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
