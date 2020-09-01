@@ -139,7 +139,6 @@ memoized-property==1.0.3
 mf2py==1.1.2
 mistune==0.8.4
 mlflow==1.8.0
-mlproject @ file:///Users/georgesdelrieu/code/g-delrieu/data-challenges/07-Data-Engineering/01-Code-as-a-Product/02-Package-installation/mlproject
 more-itertools==8.4.0
 msgpack==1.0.0
 msrest==0.6.18
