@@ -30,55 +30,67 @@ import wikipedia
 
 # Load some data, define some values
 
-vectorizer = cPickle.load(open('../greenr/vectorizer.pk', 'rb'))
-df_wiki_similarities = cPickle.load(open('../greenr/df_wiki_similarities.pk', 'rb'))
-df_recorded_similarities = cPickle.load(open('../greenr/df_recorded_similarities.pk', 'rb'))
-
+df_recorded_similarities = cPickle.load(
+    open('../greenr/df_recorded_similarities.pk', 'rb'))
 api_key = cPickle.load(open('../greenr/api_key.pk', 'rb'))
+
+with open('../greenr/matching_objects.pk', 'rb') as handle:
+    matching_objects_dict = cPickle.load(handle)
+    vectorizer = matching_objects_dict['vectorizer']
+    df_wiki_match_scores = matching_objects_dict['df_wiki_match_scores']
+    category_list = matching_objects_dict['category_list']
+    category_summary_vectors = matching_objects_dict[
+        'category_summary_vectors']
+    category_summaries = matching_objects_dict['category_summaries']
+
 cse_id = "dd94ab4664d1ce589"
-
-catsums = df_wiki_similarities['summaries'][:45]
-cats = list(df_wiki_similarities[df_wiki_similarities['ingr/cat'] == 'cat']
-            ['ingredient'])
-catvectors = vectorizer.transform(catsums)
-
 similarity_cutoff = 0.1
 no_match = 'No match found'
 
-# Define some utility functions
+### Define some utility functions
+
+# Own db
 
 def is_ingredient_in_database(ingredient):
     found = ingredient in list(df_recorded_similarities.ingredient)
     return found
 
+
 def get_database_match(ingredient):
 
-    match = df_recorded_similarities.loc[df_recorded_similarities['ingredient'] == ingredient, 'category'].iloc[0]
+    match = df_recorded_similarities.loc[
+        df_recorded_similarities['ingredient'] == ingredient,
+        'category'].iloc[0]
 
     return match
 
+
+# Wiki db
+
 def is_ingredient_in_wikidata(ingredient):
-    found = ingredient in list(df_wiki_similarities.ingredient)
+    found = ingredient in list(df_wiki_match_scores.ingredient)
     return found
+
 
 def get_wiki_match(ingredient):
 
-    i_ix = list(df_wiki_similarities.ingredient).index(ingredient)
+    match = df_wiki_match_scores.loc[df_wiki_match_scores['ingredient'] ==
+                                     ingredient, 'category'].iloc[0]
 
-    chosen_summ = df_wiki_similarities.summaries[i_ix]
+    score = df_wiki_match_scores.loc[df_wiki_match_scores['ingredient'] ==
+                                     ingredient, 'score'].iloc[0]
 
-    sims = df_wiki_similarities.iloc[i_ix, 4:]
+    return match, score
 
-    c_ix = pd.to_numeric(sims).argmax()
 
-    ingredient = df_wiki_similarities['ingredient'][i_ix]
-    category = df_wiki_similarities['ingredient'][c_ix]
-
-    return category, max(sims)
+# Google option
 
 def google_query(query, api_key, cse_id, **kwargs):
 
-    query_service = build("customsearch", "v1", developerKey=api_key, cache_discovery = False)
+    query_service = build("customsearch",
+                          "v1",
+                          developerKey=api_key,
+                          cache_discovery=False)
     query_results = query_service.cse().list(q=query, cx=cse_id,
                                              **kwargs).execute()
 
@@ -96,6 +108,7 @@ def get_google_cse_result(ingredient):
 
     return ingredient, url, url_base
 
+
 def get_pageid_from_base(base):
 
     info_url = f'https://en.wikipedia.org/w/index.php?title={base}&action=info'
@@ -111,11 +124,13 @@ def get_pageid_from_base(base):
 
     return pageid
 
+
 def get_summary_from_id(pageid):
 
     pagesummary = wikipedia.page(pageid=pageid).summary
 
     return pagesummary
+
 
 def pre_process_summary(summary):
 
@@ -138,7 +153,8 @@ def pre_process_summary(summary):
     # Lemmatize
     lemmatizer = WordNetLemmatizer()
 
-    summary = ' '.join([lemmatizer.lemmatize(word) for word in summary.split(' ')])
+    summary = ' '.join(
+        [lemmatizer.lemmatize(word) for word in summary.split(' ')])
 
     # Keep only nouns
     tokens = summary.split()
@@ -153,21 +169,23 @@ def pre_process_summary(summary):
 
     return summary
 
+
 def get_match_and_score(summary_vector):
 
     scoreseries = []
 
-    for j, catsum in enumerate(catsums):
+    for j, _ in enumerate(category_summaries):
 
-        cosine_sum = 1 - spatial.distance.cosine(summary_vector.toarray(),
-                                                 catvectors[j, :].toarray())
+        cosine_sum = 1 - spatial.distance.cosine(
+            summary_vector.toarray(), category_summary_vectors[j, :].toarray())
 
         scoreseries.append(cosine_sum)
 
     matchscore = max(scoreseries)
-    match = cats[scoreseries.index(matchscore)]
+    match = category_list[scoreseries.index(matchscore)]
 
     return match, matchscore
+
 
 def get_google_match(ingredient):
 
@@ -188,19 +206,26 @@ def get_google_match(ingredient):
 
     return match, matchscore
 
+
+# Update own db
+
 def update_database(ingredient, match):
 
     global df_recorded_similarities
 
-    df_tmp = pd.DataFrame([[ingredient, match]], columns = ['ingredient','category'])
+    df_tmp = pd.DataFrame([[ingredient, match]],
+                          columns=['ingredient', 'category'])
 
-    df_recorded_similarities = df_recorded_similarities.append(df_tmp, ignore_index=True)
+    df_recorded_similarities = df_recorded_similarities.append(
+        df_tmp, ignore_index=True)
 
-    cPickle.dump(df_recorded_similarities, open("../greenr/df_recorded_similarities.pk", "wb"))
+    cPickle.dump(df_recorded_similarities,
+                 open("../greenr/df_recorded_similarities.pk", "wb"))
 
     return None
 
-# Define the matching function
+
+### Define the overall matching function
 
 def get_categories(df_parser_output, try_google=False):
 
@@ -250,7 +275,7 @@ def get_categories(df_parser_output, try_google=False):
 
         matched_categories.append(match)
 
-    for i,cat in enumerate(matched_categories):
+    for i, cat in enumerate(matched_categories):
         if cat == 'Onions & leeks':
             matched_categories[i] = 'Onions & Leeks'
 
