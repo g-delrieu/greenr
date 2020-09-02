@@ -31,10 +31,10 @@ import wikipedia
 # Load some data, define some values
 
 df_recorded_similarities = cPickle.load(
-    open('greenr/df_recorded_similarities.pk', 'rb'))
-api_key = cPickle.load(open('greenr/api_key.pk', 'rb'))
+    open('df_recorded_similarities.pk', 'rb'))
+api_key = cPickle.load(open('api_key.pk', 'rb'))
 
-with open('greenr/matching_objects.pk', 'rb') as handle:
+with open('matching_objects.pk', 'rb') as handle:
     matching_objects_dict = cPickle.load(handle)
     vectorizer = matching_objects_dict['vectorizer']
     df_wiki_match_scores = matching_objects_dict['df_wiki_match_scores']
@@ -220,7 +220,7 @@ def update_database(ingredient, match):
         df_tmp, ignore_index=True)
 
     cPickle.dump(df_recorded_similarities,
-                 open("greenr/df_recorded_similarities.pk", "wb"))
+                 open("df_recorded_similarities.pk", "wb"))
 
     return None
 

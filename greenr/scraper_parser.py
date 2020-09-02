@@ -21,7 +21,7 @@ import numpy as np
 
 tokenizer = PunktSentenceTokenizer()
 
-filename = 'greenr/finalized_model.pkl'
+filename = 'finalized_model.pkl'
 loaded_model = cPickle.load(open(filename, 'rb'))
 tagger = loaded_model.tagger_
 
