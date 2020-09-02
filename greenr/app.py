@@ -87,8 +87,8 @@ if st.button('Go!'):
     st.title(f'This recipe has an estimated environmental impact of {ghg_sum} kilos of CO2 per serving')
 
     # Fetching and showing chart
-    plt,debugvalue = visualizer.hbarchart(df_parsed)
-    st.pyplot(plt)
+    plt,debugvalue = visualizer.waffleplot(df_parsed)
+    st.pyplot(plt, width = 700, height = 700)
 
     st.dataframe(df_parsed)
     st.text(debugvalue)
