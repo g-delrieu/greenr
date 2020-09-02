@@ -18,14 +18,8 @@ st.beta_set_page_config(
      initial_sidebar_state="collapsed"
  )
 ###########################################
-st.text('')
-st.text('')
-st.text('')
-st.text('')
-st.text('')
-st.text('')
 st.title('GREENR!')
-st.subheader(' A click closer to a greener plate')
+st.subheader('*A click closer to a greener plate*')
 
 ###########################################
 
@@ -56,36 +50,51 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-#def remote_css(url):
-#    st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
-
 local_css("style.css")
 ###########################################
 
-url = st.text_input("", "https://www.bbc.co.uk/food/recipes/caribbean_roast_chicken_45833")
-
+inputbar = st.empty()
 status_text = st.empty()
+gobutton = st.empty()
 
-if st.button('Go!'):
+url = inputbar.text_input("", "https://www.bbc.co.uk/food/recipes/caribbean_roast_chicken_45833")
 
-    # Progress bar
-    progress_bar = st.progress(0)
+if gobutton.button('Go!'):
 
-    for i in range(100):
-        progress_bar.progress(i + 1)
+    # Cleaning up input elements
+    gobutton.empty()
+    inputbar.empty()
+
+    # Indicate progress
     status_text.text(
         'Fetching your recipe...')
-    time.sleep(.2)
 
-    # Calling main calculation function
+    # Add gif
+    file_ = open("loading.gif", "rb")
+    contents = file_.read()
+    data_url = base64.b64encode(contents).decode("utf-8")
+    file_.close()
+
+    load_runner = st.markdown(
+        f'<p style="text-align:center;"> <img src="data:image/gif;base64,{data_url}"> </p>',
+        unsafe_allow_html=True,
+        )
+
+    # Calling main calculation function & fetching chart
     ghg_sum, df_parsed = main_calculation.calculate(url)
+    plt,debugvalue = visualizer.waffleplot(df_parsed)
+
+    # Cleaning up loading indicators
+    load_runner.empty()
+    status_text.empty()
 
     # Showing main result
     st.title(f'This recipe has an estimated environmental impact of {ghg_sum} kilos of CO2 per serving')
 
-    # Fetching and showing chart
-    plt,debugvalue = visualizer.waffleplot(df_parsed)
-    st.pyplot(plt, width = 700, height = 700)
+    st.text("")
+
+    plt = plt
+    st.pyplot(use_container_width= False)
 
     st.dataframe(df_parsed)
     st.text(debugvalue)
