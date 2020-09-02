@@ -17,4 +17,7 @@ enableCORS=false\n\
 port = $PORT\n\
 " > ~/.streamlit/config.toml
 
+echo "####################
+printing LS ###############"
 
+ls
