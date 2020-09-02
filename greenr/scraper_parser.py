@@ -37,6 +37,11 @@ def get_ingredients_url(url):
 
     servingsize = soup.find('p', class_ = "recipe-metadata__serving").get_text().split(' ')[1]
 
+    try:
+        servingsize = str(servingsize).split('-')[0]
+    except:
+        pass
+
     return ingredient, servingsize
 
 def sent2labels(sent):
@@ -125,7 +130,7 @@ def parse_ingredient(sent):
 
 
 def parse_recipe_ingredients(ingredient_list):
-    #import pdb; pdb.set_trace()
+
     """Wrapper around parse_ingredient so we can call it on an ingredient list"""
     sentences = tokenizer.tokenize(ingredient_list)
     sentences = [sent.strip('\n') for sent in sentences]
@@ -167,9 +172,6 @@ def parse_recipe_ingredients(ingredient_list):
             except:
                 names.append(tmp)
 
-
-            #else:
-            #    names.append(tmp)
         else:
             names.append(np.nan)
 
@@ -203,6 +205,7 @@ def parse_recipe_ingredients(ingredient_list):
 
     final_df.loc[final_df['unit'] == 'teaspoon', 'qty'] = 0
     final_df.loc[final_df['unit'] == 'teaspoon', 'unit'] = 'gram'
+    final_df.loc[final_df['qty'].astype(str) == 'nan', 'qty'] = 1
 
     return final_df
 

@@ -10,12 +10,15 @@ data = data.set_index('name')
 def ghg_calc(df):
     impact = []
     df = df.reset_index()
+
     for i in range(len(df.unit)):
 
         if str(df.qty[i]).replace(".", "", 1).isdigit() and df.category[i] != 'No match found':
             if df.unit[i] == 'tablespoon':
                 impact.append(float(df.qty[i])*float(data.tablespoon[df.category[i]])*float(data.ghg[df.category[i]]))
             elif df.unit[i] == 'unit':
+                impact.append(float(df.qty[i])*float(data.unit[df.category[i]])*float(data.ghg[df.category[i]]))
+            elif df.unit[i] == 'fillet':
                 impact.append(float(df.qty[i])*float(data.unit[df.category[i]])*float(data.ghg[df.category[i]]))
             elif df.unit[i] == 'gram':
                 impact.append((float(df.qty[i])/1000)*float(data.ghg[df.category[i]]))
@@ -29,5 +32,7 @@ def ghg_calc(df):
                 impact.append(0)
         else:
             impact.append(0)
-        #import pdb; pdb.set_trace()
+
+        impact = [x if str(x) != 'nan' else 0 for x in impact]
+
     return sum(impact), impact

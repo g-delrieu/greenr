@@ -238,7 +238,7 @@ def get_categories(df_parser_output, try_google=False):
 
     for ingredient in list_of_ingredients:
 
-        if is_ingredient_in_database(ingredient):
+        if is_ingredient_in_database(ingredient) and get_database_match(ingredient) != no_match:
 
             match = get_database_match(ingredient)
 
@@ -248,7 +248,7 @@ def get_categories(df_parser_output, try_google=False):
 
                 wikimatch, score = get_wiki_match(ingredient)
 
-                if score > similarity_cutoff:
+                if score > similarity_cutoff and wikimatch != no_match:
                     match = wikimatch
 
                 elif try_google:

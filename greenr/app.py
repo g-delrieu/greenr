@@ -84,8 +84,11 @@ if st.button('Go!'):
     ghg_sum, df_parsed = main_calculation.calculate(url)
 
     # Showing main result
-    st.title(f'This recipe has an estimated environmental impact of {ghg_sum} kilos of CO2')
+    st.title(f'This recipe has an estimated environmental impact of {ghg_sum} kilos of CO2 per serving')
 
     # Fetching and showing chart
-    plt = visualizer.piechart(df_parsed)
+    plt,debugvalue = visualizer.hbarchart(df_parsed)
     st.pyplot(plt)
+
+    st.dataframe(df_parsed)
+    st.text(debugvalue)
