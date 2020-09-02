@@ -9,8 +9,6 @@ import base64
 import main_calculation
 import visualizer
 
-
-
 ###########################################
 
 st.beta_set_page_config(

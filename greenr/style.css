@@ -1,21 +1,26 @@
 body {
-    color: #fff;
-    background-color: #1cbd47;
+    color: #ed0707;
+    background-color: #466d1d
+    ;
 }
 
 .stButton>button {
-    color: #4F8BF9;
-    border-radius: 50%;
+    color: #ed0707;
+    border-radius: 75%;
     height: 3em;
     width: 3em;
 }
 
 .stTextInput>div>div>input {
-    color: #4F8BF9;
+    color: #ed0707;
 }
 
 
 .sidebar .sidebar-content {
-    background-image: linear-gradient(#1cbd47,#1cbd47);
+    background-image: linear-gradient(#466d1d,#466d1d);
     color: white;
+}
+.stSpinner>spinner {
+  color: #4F8BF9
+
 }
