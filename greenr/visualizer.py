@@ -34,7 +34,7 @@ def waffleplot(df_parsed):
     values = [x / 0.243 for x in list(data.values())]
 
     # Define labels for legend
-    labels = ["{0} ({1}%)".format(k, (round(100 * v/sum([v for k,v in data.items()])))) for k, v in data.items()]
+    labels = ["{0} ({1}%)".format(k, round(100 * v/sum([v for k,v in data.items()]))) for k, v in data.items()]
 
     labelswrapped = [ '\n'.join(wrap(l, 30)) for l in labels]
 

@@ -1,3 +1,14 @@
+import os
+
+
+print('===== printing directory =======')
+os.system('pwd')
+
+print('===== printing content directory =======')
+os.system('ls')
+
+
+
 import re
 import json
 from ingredient_phrase_tagger.training import utils
@@ -16,6 +27,7 @@ import pandas as pd
 from pathlib import Path
 import subprocess
 import numpy as np
+
 
 
 

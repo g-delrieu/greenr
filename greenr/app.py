@@ -5,11 +5,11 @@ import pandas as pd
 import time
 import webbrowser
 import base64
-import altair as alt
-
 
 import main_calculation
 import visualizer
+
+
 
 ###########################################
 
@@ -52,7 +52,6 @@ def set_png_as_page_bg(png_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
     return
 
-#set_png_as_page_bg('background.png')
 ###########################################
 
 def local_css(file_name):
@@ -62,7 +61,7 @@ def local_css(file_name):
 #def remote_css(url):
 #    st.markdown(f'<link href="{url}" rel="stylesheet">', unsafe_allow_html=True)
 
-local_css("style.css")
+local_css("greenr/style.css")
 ###########################################
 
 url = st.text_input("", "https://www.bbc.co.uk/food/recipes/caribbean_roast_chicken_45833")
