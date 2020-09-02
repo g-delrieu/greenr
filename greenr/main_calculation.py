@@ -1,8 +1,19 @@
+import os
+
+
+print('===== printing directory =======')
+os.system('pwd')
+
+print('===== printing content directory =======')
+os.system('ls')
+
 import pandas as pd
 
 import scraper_parser
 import matching
 import calculator
+
+
 
 def calculate(url):
 
