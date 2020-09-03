@@ -44,7 +44,7 @@ def waffleplot(df_parsed):
 
     # Define colors
     num_colors = len(labels)
-    cm = pylab.get_cmap('RdYlGn')
+    cm = pylab.get_cmap('RdYlBu')
     clist = [cm(1.*i/num_colors) for i in range(num_colors)]
 
     # Define values and title
@@ -81,7 +81,7 @@ def waffleplot(df_parsed):
         'bbox_to_anchor': (0, -.1),
         'ncol': 3,
         'fontsize': 14,
-        'facecolor': '#466d1d',
+        'facecolor': '#1cbd47',
         'edgecolor': 'white',
         'labelcolor': 'white',
         'borderpad': 1
@@ -98,7 +98,7 @@ def waffleplot(df_parsed):
         }
     )
 
-    fig.gca().set_facecolor('#466d1d')
-    fig.set_facecolor('#466d1d')
+    fig.gca().set_facecolor('#1cbd47')
+    fig.set_facecolor('#1cbd47')
 
     return plt.show()
