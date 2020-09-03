@@ -44,28 +44,28 @@ def waffleplot(df_parsed):
 
     # Define colors
     num_colors = len(labels)
-    cm = pylab.get_cmap('RdYlGn')
+    cm = pylab.get_cmap('RdYlBu')
     clist = [cm(1.*i/num_colors) for i in range(num_colors)]
 
     # Define values and title
     values = [x / 0.243 for x in list(data.values())]
-    title = 'Impact breakdown: Each car represents\ndriving 1 kilometer with a petrol car (total recipe)'
+    title = f'Total recipe: Each car represents driving\n1 kilometer with a petrol car ({round(totalghg/0.243,1)} in total)'
 
     # Changing car size and row count based on total GHG
     if totalghg/0.243 <= 60:
-        iconsize = 45
-        row_count = 5
+        iconsize = 40
+        row_count = 6
     elif totalghg/(0.243/2):
         iconsize = 20
-        row_count = 10
+        row_count = 12
     else:
         iconsize = 10
-        row_count = 20
+        row_count = 24
 
     # Plot
     fig = plt.figure(
         FigureClass=Waffle,
-        figsize = (20,8),
+        figsize = (24,8),
         rows=row_count,
         values=values,
         colors=clist,
@@ -75,14 +75,13 @@ def waffleplot(df_parsed):
         icon_size=iconsize,
         icon_legend=True,
         vertical = False,
-        interval_ratio_x=0.2,
-        interval_ratio_y=0.2,
+        block_arranging_style='new-line',
         legend={
         'loc': 'upper left',
         'bbox_to_anchor': (0, -.1),
         'ncol': 3,
         'fontsize': 14,
-        'facecolor': '#466d1d',
+        'facecolor': '#1cbd47',
         'edgecolor': 'white',
         'labelcolor': 'white',
         'borderpad': 1
@@ -99,7 +98,7 @@ def waffleplot(df_parsed):
         }
     )
 
-    fig.gca().set_facecolor('#466d1d')
-    fig.set_facecolor('#466d1d')
+    fig.gca().set_facecolor('#1cbd47')
+    fig.set_facecolor('#1cbd47')
 
     return plt.show()
