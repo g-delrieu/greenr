@@ -235,10 +235,12 @@ def url_to_df(url):
 
 #### parser for Marmiton:
 def marmiton_to_df(url):
-    page = requests.get(f'{url}')
+
+    page = requests.get(f'https://www.marmiton.org/recettes/recette_pizza-burrata-et-basilic_528367.aspx')
     soup = BeautifulSoup(page.content, 'html.parser')
-    tmp = soup.find_all('script', type = "text/javascript")[9]
-    ingredient = json.loads(re.search('(?<=recipesData \= )(.*?)(?=;)', str(tmp.contents[0])).group(0))['recipes'][0]['ingredients']
+    tmp = soup.find_all('script', type = "text/javascript")
+    ingredient = json.loads(re.search('(?<=recipesData \= )(.*?)(?=;)', str(tmp)).group(0))['recipes'][0]['ingredients']
+
 
     #translating
     translator = Translator()
