@@ -16,6 +16,7 @@ import pandas as pd
 from pathlib import Path
 import subprocess
 import numpy as np
+from googletrans import Translator
 
 
 
@@ -207,3 +208,49 @@ def url_to_df(url):
     ingredient_list = get_ingredients_url(url)
 
     return parse_recipe_ingredients(ingredient_list)
+
+
+#### parser for Marmiton:
+def marmiton_to_df(url):
+    page = requests.get(f'{url}')
+    soup = BeautifulSoup(page.content, 'html.parser')
+    tmp = soup.find_all('script', type = "text/javascript")[9]
+    ingredient = json.loads(re.search('(?<=recipesData \= )(.*?)(?=;)', str(tmp.contents[0])).group(0))['recipes'][0]['ingredients']
+
+    #translating
+    translator = Translator()
+
+    ingredients = []
+    qty = []
+    unit = []
+    for i in range(len(ingredient)):
+        ingredients.append(translator.translate(ingredient[i]['name'], src ='fr').text)
+        qty.append(ingredient[i]['qty'])
+        #import pdb; pdb.set_trace()
+        if ingredient[i]['unit']== '':
+            unit.append('unit')
+        elif translator.translate(ingredient[i]['unit'], src ='fr').text == 'g':
+            unit.append('gram')
+        elif translator.translate(ingredient[i]['unit'], src ='fr').text == 'spoon':
+            unit.append('teaspoon')
+
+        else:
+            unit.append(translator.translate(ingredient[i]['unit'], src ='fr').text)
+        #
+    final_df = pd.DataFrame(list(zip(qty, unit, ingredients)), columns = ['qty', 'unit', 'ingredients'])
+    final_df = final_df[final_df['ingredients'].notna()]
+    final_df = final_df[final_df['unit'].notna()]
+    final_df = final_df[final_df['unit'] != 'teaspoon']
+
+    return final_df
+
+#### scraper for Chefkoch:
+def chefkoch_to_list(url):
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    tmp = soup.find_all('script', type = "application/ld+json")[1]
+    ing_list = json.loads(str(tmp).strip('<script type="application/ld+json">    '))['recipeIngredient']
+    de_list = []
+    for ing in ing_list:
+        de_list.append(Translator().translate(ing, src ='de').text)
+    return de_list
