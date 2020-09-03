@@ -87,15 +87,18 @@ if gobutton.button('Go!'):
         )
 
     # Calling main calculation function & fetching chart
-    ghg_sum, df_parsed, recipe_title = main_calculation.calculate(url)
-    plt = visualizer.waffleplot(df_parsed)
+    out = main_calculation.calculate(url)
+    plt = visualizer.waffleplot(out[1], en = out[-1])
 
     # Cleaning up loading indicators
     load_runner.empty()
     status_text.empty()
 
     # Showing main result
-    st.header(f'**{recipe_title}**: {ghg_sum} kg of CO2 per serving')
+    if out[-1]:
+        st.header(f'**{out[2]}:** {out[0]} kg of CO2 per serving')
+    else:
+        st.header(f'**Recipe impact:** {out[0]} kg of CO2')
 
     st.text("")
 

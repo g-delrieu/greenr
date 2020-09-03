@@ -15,7 +15,10 @@ from pywaffle import Waffle
 
 import pylab
 
-def waffleplot(df_parsed):
+def waffleplot(df_parsed, en = True):
+
+    if not en:
+        df_parsed=df_parsed.rename(columns = {'name':'raw_ingredient'})
 
     # Define x(dict)
     x = df_parsed.groupby('raw_ingredient')['impact'].sum()
