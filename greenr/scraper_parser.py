@@ -48,13 +48,14 @@ def get_ingredients_url(url):
         ingredient += '\n'
 
     servingsize = soup.find('p', class_ = "recipe-metadata__serving").get_text().split(' ')[1]
+    recipe_title = soup.find('h1', class_ = 'gel-trafalgar content-title__text').get_text()
 
     try:
         servingsize = str(servingsize).split('-')[0]
     except:
         pass
 
-    return ingredient, servingsize
+    return ingredient, servingsize, recipe_title
 
 def sent2labels(sent):
     return [word[-1] for word in sent]
@@ -224,8 +225,8 @@ def parse_recipe_ingredients(ingredient_list):
 
 def url_to_df(url):
 
-    ingredient_list, servingsize = get_ingredients_url(url)
+    ingredient_list, servingsize, recipe_title = get_ingredients_url(url)
 
     raw_ingredient_list = ingredient_list
 
-    return parse_recipe_ingredients(ingredient_list), servingsize, raw_ingredient_list.split('\n')
+    return parse_recipe_ingredients(ingredient_list), servingsize, raw_ingredient_list.split('\n'), recipe_title

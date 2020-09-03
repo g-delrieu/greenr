@@ -56,14 +56,20 @@ local_css("style.css")
 inputbar = st.empty()
 status_text = st.empty()
 gobutton = st.empty()
+instruct_text = st.empty()
 
 url = inputbar.text_input("", "https://www.bbc.co.uk/food/recipes/caribbean_roast_chicken_45833")
+
+instruct_text.text('Paste any URL to a recipe page on bbc.co.uk (EN), chefkoch.de (DE) or marmiton.org (FR)')
 
 if gobutton.button('Go!'):
 
     # Cleaning up input elements
     gobutton.empty()
     inputbar.empty()
+    instruct_text.empty()
+
+    time.sleep(.1)
 
     # Indicate progress
     status_text.text(
@@ -81,7 +87,7 @@ if gobutton.button('Go!'):
         )
 
     # Calling main calculation function & fetching chart
-    ghg_sum, df_parsed = main_calculation.calculate(url)
+    ghg_sum, df_parsed, recipe_title = main_calculation.calculate(url)
     plt = visualizer.waffleplot(df_parsed)
 
     # Cleaning up loading indicators
@@ -89,9 +95,12 @@ if gobutton.button('Go!'):
     status_text.empty()
 
     # Showing main result
-    st.title(f'Estimated impact per serving: {ghg_sum} kg of CO2')
+    st.header(f'**{recipe_title}**: {ghg_sum} kg of CO2 per serving')
 
     st.text("")
 
     plt = plt
     st.pyplot()
+
+    st.markdown(f'<p style = "text-align:center;"> Press [R] to refresh the page and go again! </p>',
+        unsafe_allow_html=True,)

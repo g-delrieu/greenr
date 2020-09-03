@@ -40,11 +40,11 @@ def waffleplot(df_parsed):
 
     # Define labels for legend, wrap at 25 characters
     labels = ["{0} ({1}%)".format(k, round(100 * v/sum([v for k,v in data.items()]))) for k, v in data.items()]
-    labelswrapped = [ '\n'.join(wrap(l, 25)) for l in labels]
+    labelswrapped = [ '\n'.join(wrap(l, 40)) for l in labels]
 
     # Define colors
     num_colors = len(labels)
-    cm = pylab.get_cmap('RdYlBu')
+    cm = pylab.get_cmap('RdYlGn')
     clist = [cm(1.*i/num_colors) for i in range(num_colors)]
 
     # Define values and title
@@ -66,6 +66,15 @@ def waffleplot(df_parsed):
     fig = plt.figure(
         FigureClass=Waffle,
         figsize = (24,8),
+        title = {
+        'label': title,
+        'loc': 'left',
+        'pad': 10,
+        'color': 'white',
+        'style': 'italic',
+        'fontdict': {
+            'fontsize': 30
+        }},
         rows=row_count,
         values=values,
         colors=clist,
@@ -79,26 +88,16 @@ def waffleplot(df_parsed):
         legend={
         'loc': 'upper left',
         'bbox_to_anchor': (0, -.1),
-        'ncol': 3,
+        'ncol': 2,
         'fontsize': 14,
-        'facecolor': '#1cbd47',
+        'facecolor': '#466d1d',
         'edgecolor': 'white',
         'labelcolor': 'white',
-        'borderpad': 1
-        },
-        title = {
-        'label': title,
-        'loc': 'left',
-        'pad': 10,
-        'color': 'white',
-        'style': 'italic',
-        'fontdict': {
-            'fontsize': 30
-        }
+        #'borderpad': .5
         }
     )
 
-    fig.gca().set_facecolor('#1cbd47')
-    fig.set_facecolor('#1cbd47')
+    fig.gca().set_facecolor('#466d1d')
+    fig.set_facecolor('#466d1d')
 
     return plt.show()

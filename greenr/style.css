@@ -1,6 +1,6 @@
 body {
     color: #FFFFFF;
-    background-color: #1cbd47;
+    background-color: #466d1d;
 }
 
 .stButton>button {
@@ -16,7 +16,7 @@ body {
 }
 
 .sidebar .sidebar-content {
-    background-image: linear-gradient(#1cbd47,#485934);
+    background-image: linear-gradient(#466d1d,#485934);
     color: white;
 }
 
