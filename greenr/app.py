@@ -82,19 +82,16 @@ if gobutton.button('Go!'):
 
     # Calling main calculation function & fetching chart
     ghg_sum, df_parsed = main_calculation.calculate(url)
-    plt,debugvalue = visualizer.waffleplot(df_parsed)
+    plt = visualizer.waffleplot(df_parsed)
 
     # Cleaning up loading indicators
     load_runner.empty()
     status_text.empty()
 
     # Showing main result
-    st.title(f'This recipe has an estimated environmental impact of {ghg_sum} kilos of CO2 per serving')
+    st.title(f'Estimated impact per serving: {ghg_sum} kg of CO2')
 
     st.text("")
 
     plt = plt
-    st.pyplot(use_container_width= False)
-
-    st.dataframe(df_parsed)
-    st.text(debugvalue)
+    st.pyplot()

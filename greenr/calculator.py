@@ -33,6 +33,6 @@ def ghg_calc(df):
         else:
             impact.append(0)
 
-        impact = [x if str(x) != 'nan' else 0 for x in impact]
+    impact = [x if str(x) != 'nan' else 0 for x in impact]
 
     return sum(impact), impact
