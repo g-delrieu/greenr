@@ -30,8 +30,12 @@ import wikipedia
 
 # Load some data, define some values
 
-df_recorded_similarities = cPickle.load(
-    open('df_recorded_similarities.pk', 'rb'))
+try:
+    df_recorded_similarities = cPickle.load(
+        open('df_recorded_similarities.pk', 'rb'))
+except:
+    df_recorded_similarities = pd.DataFrame(data = [['ground chuck', 'Bovine Meat (beef herd)']], columns = ['ingredient', 'category'])
+
 api_key = cPickle.load(open('api_key.pk', 'rb'))
 
 with open('matching_objects.pk', 'rb') as handle:
