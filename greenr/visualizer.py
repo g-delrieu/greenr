@@ -49,23 +49,23 @@ def waffleplot(df_parsed):
 
     # Define values and title
     values = [x / 0.243 for x in list(data.values())]
-    title = 'Impact breakdown: Each car represents\ndriving 1 kilometer with a petrol car (total recipe)'
+    title = f'Total recipe: Each car represents driving\n1 kilometer with a petrol car ({round(totalghg/0.243,1)} in total)'
 
     # Changing car size and row count based on total GHG
     if totalghg/0.243 <= 60:
-        iconsize = 45
-        row_count = 5
+        iconsize = 40
+        row_count = 6
     elif totalghg/(0.243/2):
         iconsize = 20
-        row_count = 10
+        row_count = 12
     else:
         iconsize = 10
-        row_count = 20
+        row_count = 24
 
     # Plot
     fig = plt.figure(
         FigureClass=Waffle,
-        figsize = (20,8),
+        figsize = (24,8),
         rows=row_count,
         values=values,
         colors=clist,
@@ -75,8 +75,7 @@ def waffleplot(df_parsed):
         icon_size=iconsize,
         icon_legend=True,
         vertical = False,
-        interval_ratio_x=0.2,
-        interval_ratio_y=0.2,
+        block_arranging_style='new-line',
         legend={
         'loc': 'upper left',
         'bbox_to_anchor': (0, -.1),
