@@ -260,8 +260,8 @@ def marmiton_to_df(url):
         else:
             unit.append(translator.translate(ingredient[i]['unit'], src ='fr').text)
         #
-    final_df = pd.DataFrame(list(zip(qty, unit, ingredients)), columns = ['qty', 'unit', 'ingredients'])
-    final_df = final_df[final_df['ingredients'].notna()]
+    final_df = pd.DataFrame(list(zip(qty, unit, ingredients)), columns = ['qty', 'unit', 'name'])
+    final_df = final_df[final_df['name'].notna()]
     final_df = final_df[final_df['unit'].notna()]
     final_df = final_df[final_df['unit'] != 'teaspoon']
 
