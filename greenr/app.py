@@ -58,18 +58,15 @@ status_text = st.empty()
 gobutton = st.empty()
 instruct_text = st.empty()
 
-url = inputbar.text_input("", "https://www.bbc.co.uk/food/recipes/caribbean_roast_chicken_45833")
+url = inputbar.text_input("", "")
 
-instruct_text.text('Paste any URL to a recipe page on bbc.co.uk (EN), chefkoch.de (DE) or marmiton.org (FR)')
+instruct_text.text('Paste any URL to a recipe page on bbc.co.uk (EN), chefkoch.de (DE) or marmiton.org (FR),\ne.g.: https://www.bbc.co.uk/food/recipes/caribbean_roast_chicken_45833')
 
-if gobutton.button('Go!'):
+if url:
 
     # Cleaning up input elements
-    gobutton.empty()
-    inputbar.empty()
     instruct_text.empty()
-
-    time.sleep(.1)
+    inputbar.empty()
 
     # Indicate progress
     status_text.text(
@@ -129,4 +126,3 @@ if gobutton.button('Go!'):
             f'<p style="text-align:center;"> <img src="data:image/gif;base64,{data_url}"> </p>',
             unsafe_allow_html=True,
             )
-
