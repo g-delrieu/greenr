@@ -86,24 +86,47 @@ if gobutton.button('Go!'):
         unsafe_allow_html=True,
         )
 
-    # Calling main calculation function & fetching chart
-    out = main_calculation.calculate(url)
-    plt = visualizer.waffleplot(out[1], en = out[-1])
+    # Try/except to catch errors
+    try:
 
-    # Cleaning up loading indicators
-    load_runner.empty()
-    status_text.empty()
+        # Calling main calculation function & fetching chart
+        out = main_calculation.calculate(url)
+        plt = visualizer.waffleplot(out[1], en = out[-1])
 
-    # Showing main result
-    if out[-1]:
-        st.header(f'**{out[2]}:** {out[0]} kg of CO2 per serving')
-    else:
-        st.header(f'**Recipe impact:** {out[0]} kg of CO2')
+        # Cleaning up loading indicators
+        load_runner.empty()
+        status_text.empty()
 
-    st.text("")
+        # Showing main result
+        if out[-1]:
+            st.header(f'**{out[2]}:** {out[0]} kg of CO2 per serving')
+        else:
+            st.header(f'**Recipe impact:** {out[0]} kg of CO2')
 
-    plt = plt
-    st.pyplot()
+        st.text("")
 
-    st.markdown(f'<p style = "text-align:center;"> Press [R] to refresh the page and go again! </p>',
-        unsafe_allow_html=True,)
+        plt = plt
+        st.pyplot()
+
+        st.markdown(f'<p style = "text-align:center;"> Press [R] to refresh the page and go again! </p>',
+            unsafe_allow_html=True,)
+
+    except:
+
+        # Cleaning up loading indicators
+        load_runner.empty()
+        status_text.empty()
+
+        # Message
+        st.text('Something went wrong! Please press [R] to refresh, make sure your pasted url comes from\na supported recipe site and try again!')
+
+        # Gif
+        file_ = open("error.gif", "rb")
+        contents = file_.read()
+        data_url = base64.b64encode(contents).decode("utf-8")
+        file_.close()
+        load_runner = st.markdown(
+            f'<p style="text-align:center;"> <img src="data:image/gif;base64,{data_url}"> </p>',
+            unsafe_allow_html=True,
+            )
+
