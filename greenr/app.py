@@ -60,7 +60,7 @@ instruct_text = st.empty()
 
 url = inputbar.text_input("", "")
 
-instruct_text.text('Paste any URL to a recipe page on bbc.co.uk (EN), chefkoch.de (DE) or marmiton.org (FR),\ne.g.: https://www.bbc.co.uk/food/recipes/caribbean_roast_chicken_45833')
+instruct_text.text('Paste any URL to a recipe page on bbc.co.uk (EN), chefkoch.de (DE) or marmiton.org (FR),\ne.g.: https://www.bbc.co.uk/food/recipes/salmonburgerswithbas_86430')
 
 if url:
 
@@ -87,7 +87,7 @@ if url:
     try:
 
         # Calling main calculation function & fetching chart
-        out = main_calculation.calculate(url)
+        out = main_calculation.calculate(url.strip())
         plt = visualizer.waffleplot(out[1], en = out[-1])
 
         # Cleaning up loading indicators
@@ -105,7 +105,13 @@ if url:
         plt = plt
         st.pyplot()
 
-        st.markdown(f'<p style = "text-align:center;"> Press [R] to refresh the page and go again! </p>',
+        st.markdown(f'<p style = "text-align:center"> \
+            Offset the carbon impact of your recipe by donating to \
+            <a href="https://www.coolearth.org/" target = "_top"> \
+            coolearth.org! \
+            </a> \
+            \nIf you want to try another recipe, press [R] to refresh the page. \
+            </p>',
             unsafe_allow_html=True,)
 
     except:
@@ -126,3 +132,4 @@ if url:
             f'<p style="text-align:center;"> <img src="data:image/gif;base64,{data_url}"> </p>',
             unsafe_allow_html=True,
             )
+
