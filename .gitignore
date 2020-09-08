@@ -16,3 +16,5 @@ greenr/df_recorded_similarities.pk
 df_recorded_similarities.pk
 api_key.pk
 mongo_pwd.pkl
+greenr/mongo_pwd.pkl
+.env

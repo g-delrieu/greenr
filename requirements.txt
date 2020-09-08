@@ -177,6 +177,7 @@ pytest==6.0.1
 pytest-cov==2.10.1
 python-crfsuite==0.9.7
 python-dateutil==2.8.1
+python-dotenv-0.14.0
 python-editor==1.0.4
 python-gitlab==2.4.0
 python-slugify==4.0.1
