@@ -30,10 +30,9 @@ import wikipedia
 import pymongo
 
 # Load some data, define some values
+mongo_key = open("mongo_pwd.pkl", 'r').read()
 
-mongo_key = cPickle.load(open('mongo_pwd.pkl', 'rb'))
-
-myclient = pymongo.MongoClient(f"mongodb+srv://gdelrieu:{mongo_key}@cluster0.jceas.mongodb.net/test?retryWrites=true&w=majority")
+myclient = pymongo.MongoClient(f"mongodb+srv://gdelrieu:{mongo_key.strip()}@cluster0.jceas.mongodb.net/test?retryWrites=true&w=majority")
 mydb = myclient["greenr"]
 mycol = mydb["family_pairs"]
 
