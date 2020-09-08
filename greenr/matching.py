@@ -27,14 +27,15 @@ from googleapiclient.discovery import build
 import os.path
 
 import wikipedia
+import pymongo
 
 # Load some data, define some values
+mongo_key = open("mongo_pwd.pkl", 'r').read()
 
-try:
-    df_recorded_similarities = cPickle.load(
-        open('df_recorded_similarities.pk', 'rb'))
-except:
-    df_recorded_similarities = pd.DataFrame(data = [['ground chuck', 'Bovine Meat (beef herd)']], columns = ['ingredient', 'category'])
+myclient = pymongo.MongoClient(f"mongodb+srv://gdelrieu:{mongo_key.strip()}@cluster0.jceas.mongodb.net/test?retryWrites=true&w=majority")
+mydb = myclient["greenr"]
+mycol = mydb["family_pairs"]
+
 
 api_key = cPickle.load(open('api_key.pk', 'rb'))
 
@@ -56,15 +57,15 @@ no_match = 'No match found'
 # Own db
 
 def is_ingredient_in_database(ingredient):
-    found = ingredient in list(df_recorded_similarities.ingredient)
+
+    found = mycol.find({"ingredient":ingredient}).count() >0
+
     return found
 
 
 def get_database_match(ingredient):
 
-    match = df_recorded_similarities.loc[
-        df_recorded_similarities['ingredient'] == ingredient,
-        'category'].iloc[0]
+    match = mycol.find_one({"ingredient":ingredient})['family']
 
     return match
 
@@ -215,16 +216,9 @@ def get_google_match(ingredient):
 
 def update_database(ingredient, match):
 
-    global df_recorded_similarities
+    mydict = {"family":match,"ingredient": ingredient}
 
-    df_tmp = pd.DataFrame([[ingredient, match]],
-                          columns=['ingredient', 'category'])
-
-    df_recorded_similarities = df_recorded_similarities.append(
-        df_tmp, ignore_index=True)
-
-    cPickle.dump(df_recorded_similarities,
-                 open("df_recorded_similarities.pk", "wb"))
+    x = mycol.insert_one(mydict)
 
     return None
 
