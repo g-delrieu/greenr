@@ -31,13 +31,14 @@ import pymongo
 
 # Load some data, define some values
 mongo_key = os.environ.get('DB_PASSWORD')
+print(mongo_key)
 
 myclient = pymongo.MongoClient(f"mongodb+srv://gdelrieu:{mongo_key.strip()}@cluster0.jceas.mongodb.net/test?retryWrites=true&w=majority")
 mydb = myclient["greenr"]
 mycol = mydb["family_pairs"]
 
 
-api_key = cPickle.load(open('api_key.pk', 'rb'))
+api_key = os.environ.get('GREENR_API_KEY')
 
 with open('matching_objects.pk', 'rb') as handle:
     matching_objects_dict = cPickle.load(handle)
