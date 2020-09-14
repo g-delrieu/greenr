@@ -31,7 +31,6 @@ import pymongo
 
 # Load some data, define some values
 mongo_key = os.environ.get('DB_PASSWORD')
-print(mongo_key)
 
 myclient = pymongo.MongoClient(f"mongodb+srv://gdelrieu:{mongo_key.strip()}@cluster0.jceas.mongodb.net/test?retryWrites=true&w=majority")
 mydb = myclient["greenr"]

@@ -22,6 +22,7 @@ def calculate(url):
     o = urlparse(url)
     en = False
 
+
     if o.netloc == 'www.bbc.co.uk':
         try:
             en = True
@@ -41,6 +42,8 @@ def calculate(url):
     categories = matching.get_categories(df_parsed, try_google = True)
 
     df_parsed['category'] = categories
+
+    print(categories)
 
     ghg_impact_sum, impact_list = calculator.ghg_calc(df_parsed)
 

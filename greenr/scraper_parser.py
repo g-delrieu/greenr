@@ -168,6 +168,9 @@ def parse_recipe_ingredients(ingredient_list):
         sent = sent.replace('¾', '.75')
         sent = sent.replace('tsp', 'teaspoon')
         sent = sent.replace('tbsp', 'tablespoon')
+        sent = sent.replace('large', '')
+        sent = sent.replace('medium', '')
+        sent = sent.replace('small', '')
 
         if re.search("\dg", sent) is not None:
             sent = sent.replace("g", "gram", 1)
