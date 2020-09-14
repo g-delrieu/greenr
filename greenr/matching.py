@@ -39,7 +39,7 @@ mycol = mydb["family_pairs"]
 
 api_key = os.environ.get('GREENR_API_KEY')
 
-with open('matching_objects.pk', 'rb') as handle:
+with open('matching_objects2.pk', 'rb') as handle:
     matching_objects_dict = cPickle.load(handle)
     vectorizer = matching_objects_dict['vectorizer']
     df_wiki_match_scores = matching_objects_dict['df_wiki_match_scores']
@@ -193,7 +193,7 @@ def get_match_and_score(summary_vector):
 
 
 def get_google_match(ingredient):
-
+    import pdb; pdb.set_trace()
     try:
         ingredient, url, url_base = get_google_cse_result(ingredient)
     except:
@@ -203,9 +203,9 @@ def get_google_match(ingredient):
 
     pagesummary = get_summary_from_id(pageid)
 
-    processed_summary = pre_process_summary(pagesummary)
+    #processed_summary = pre_process_summary(pagesummary)
 
-    summary_vector = vectorizer.transform([processed_summary])
+    summary_vector = vectorizer.transform([pagesummary])
 
     match, matchscore = get_match_and_score(summary_vector)
 
@@ -228,6 +228,7 @@ def update_database(ingredient, match):
 def get_categories(df_parser_output, try_google=False):
 
     matched_categories = []
+    import pdb; pdb.set_trace()
 
     list_of_ingredients = list(df_parser_output['name'])
 
