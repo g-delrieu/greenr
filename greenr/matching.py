@@ -156,21 +156,21 @@ def pre_process_summary(summary):
     summary = ''.join([word for word in summary if not word.isdigit()])
 
     # Lemmatize
-    lemmatizer = WordNetLemmatizer()
+    #lemmatizer = WordNetLemmatizer()
 
-    summary = ' '.join(
-        [lemmatizer.lemmatize(word) for word in summary.split(' ')])
+    #summary = ' '.join(
+    #    [lemmatizer.lemmatize(word) for word in summary.split(' ')])
 
     # Keep only nouns
-    tokens = summary.split()
-    tags = nltk.pos_tag(tokens)
+    #tokens = summary.split()
+    #tags = nltk.pos_tag(tokens)
 
-    summary = [
-        word for word, pos in tags
-        if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS')
-    ]
+    #summary = [
+    #    word for word, pos in tags
+    #    if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS')
+    #]
 
-    summary = ' '.join(summary)
+    #summary = ' '.join(summary)
 
     return summary
 
@@ -193,7 +193,7 @@ def get_match_and_score(summary_vector):
 
 
 def get_google_match(ingredient):
-    import pdb; pdb.set_trace()
+
     try:
         ingredient, url, url_base = get_google_cse_result(ingredient)
     except:
@@ -203,9 +203,9 @@ def get_google_match(ingredient):
 
     pagesummary = get_summary_from_id(pageid)
 
-    #processed_summary = pre_process_summary(pagesummary)
+    processed_summary = pre_process_summary(pagesummary)
 
-    summary_vector = vectorizer.transform([pagesummary])
+    summary_vector = vectorizer.transform([processed_summary])
 
     match, matchscore = get_match_and_score(summary_vector)
 
@@ -228,13 +228,18 @@ def update_database(ingredient, match):
 def get_categories(df_parser_output, try_google=False):
 
     matched_categories = []
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
 
     list_of_ingredients = list(df_parser_output['name'])
+    target_ingredients = set(ingredient.lower() for ingredient in category_list)
 
     for ingredient in list_of_ingredients:
 
-        if is_ingredient_in_database(ingredient) and get_database_match(ingredient) != no_match:
+        if ingredient[-1] in target_ingredients:
+
+            match = ingredient[-1]
+
+        elif is_ingredient_in_database(ingredient) and get_database_match(ingredient) != no_match:
 
             match = get_database_match(ingredient)
 
@@ -257,7 +262,7 @@ def get_categories(df_parser_output, try_google=False):
                 else:
                     match = no_match
 
-            elif try_google:
+            else:
 
                 googlematch, score = get_google_match(ingredient)
 
@@ -267,8 +272,6 @@ def get_categories(df_parser_output, try_google=False):
                 else:
                     match = no_match
 
-            else:
-                match = no_match
 
             update_database(ingredient, match)
 

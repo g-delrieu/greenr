@@ -171,6 +171,7 @@ def parse_recipe_ingredients(ingredient_list):
         sent = sent.replace('large', '')
         sent = sent.replace('medium', '')
         sent = sent.replace('small', '')
+        sent = sent.replace('aubergine', 'eggplant')
 
         if re.search("\dg", sent) is not None:
             sent = sent.replace("g", "gram", 1)
@@ -198,12 +199,19 @@ def parse_recipe_ingredients(ingredient_list):
             units.append('ml')
         elif 'unit' in parsed_ingredient[0].keys():
             units.append(parsed_ingredient[0]['unit'])
+        elif 'kg' or 'kilogram' in parsed_ingredient[0]['input']:
+            units.append('kilogram')
         else:
             units.append('unit')
 
         if re.search("\dg", sent) is not None:
             try:
-                qtys.append(re.search("(\d+)((\d+))+", parsed_ingredient[0]['input']).group(0))
+                qtys.append(re.search("\d+(?=\s*g)", parsed_ingredient[0]['input']).group(0))
+            except:
+                pass
+        elif re.search("\dkg", sent) is not None:
+            try:
+                qtys.append(re.search("\d+(?=\s*kg)", parsed_ingredient[0]['input']).group(0))
             except:
                 pass
         elif 'qty' in parsed_ingredient[0].keys():
