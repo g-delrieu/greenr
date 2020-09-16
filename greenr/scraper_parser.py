@@ -1,14 +1,4 @@
 import os
-
-
-print('===== printing directory =======')
-os.system('pwd')
-
-print('===== printing content directory =======')
-os.system('ls')
-
-
-
 import re
 import json
 from ingredient_phrase_tagger.training import utils
@@ -171,7 +161,11 @@ def parse_recipe_ingredients(ingredient_list):
         sent = sent.replace('large', '')
         sent = sent.replace('medium', '')
         sent = sent.replace('small', '')
+        sent = sent.replace('kg', '000g')
         sent = sent.replace('aubergine', 'eggplant')
+        sent = sent.replace('free-range', '')
+        sent = sent.replace('salt', '')
+        sent = sent.replace('black pepper', '')
 
         if re.search("\dg", sent) is not None:
             sent = sent.replace("g", "gram", 1)
@@ -179,7 +173,6 @@ def parse_recipe_ingredients(ingredient_list):
 
         parsed_ingredient = parse_ingredient(sent)
 
-        #import pdb; pdb.set_trace()
         if 'name' in parsed_ingredient[0].keys():
 
             tmp = parsed_ingredient[0]['name']
@@ -199,8 +192,8 @@ def parse_recipe_ingredients(ingredient_list):
             units.append('ml')
         elif 'unit' in parsed_ingredient[0].keys():
             units.append(parsed_ingredient[0]['unit'])
-        elif 'kg' or 'kilogram' in parsed_ingredient[0]['input']:
-            units.append('kilogram')
+        #elif 'kg' or 'kilogram' in parsed_ingredient[0]['input']:
+        #   units.append('kilogram')
         else:
             units.append('unit')
 
@@ -225,12 +218,15 @@ def parse_recipe_ingredients(ingredient_list):
 
     final_df = pd.DataFrame(list(zip(qtys, units, names)), columns = ['qty', 'unit', 'name'])
 
+    final_df = final_df[final_df['name'] != '']
     final_df = final_df[final_df['name'].notna()]
     final_df = final_df[final_df['unit'].notna()]
 
     final_df.loc[final_df['unit'] == 'teaspoon', 'qty'] = 0
     final_df.loc[final_df['unit'] == 'teaspoon', 'unit'] = 'gram'
     final_df.loc[final_df['qty'].astype(str) == 'nan', 'qty'] = 1
+
+    final_df.reset_index()
 
     return final_df
 
@@ -239,9 +235,11 @@ def url_to_df(url):
 
     ingredient_list, servingsize, recipe_title = get_ingredients_url(url)
 
-    raw_ingredient_list = ingredient_list
+    final_df = parse_recipe_ingredients(ingredient_list)
 
-    return parse_recipe_ingredients(ingredient_list), servingsize, raw_ingredient_list.split('\n'), recipe_title
+    raw_ingredient_list = final_df.name
+
+    return parse_recipe_ingredients(ingredient_list), servingsize, str(raw_ingredient_list).strip().split('\n'), recipe_title
 
 
 #### parser for Marmiton:

@@ -17,29 +17,28 @@ import pylab
 
 def waffleplot(df_parsed, en = True):
 
-    if not en:
-        df_parsed=df_parsed.rename(columns = {'name':'raw_ingredient'})
-
+    df_parsed.name = [item.strip('oz').strip()[0].upper()+item.strip('oz').strip()[1:] for item in df_parsed['name']]
+    #print(df_parsed.name)
     # Define x(dict)
-    x = df_parsed.groupby('raw_ingredient')['impact'].sum()
+    x = df_parsed.groupby('name')['impact'].sum()
     x = x.reset_index()
 
     totalghg = x['impact'].sum()
 
     # Grouping into "Other"
     if (x['impact'] >= 0.243/2).sum() != x['impact'].size: # Any ingredient smaller than 2.43
-        while x[x['raw_ingredient'] == 'Other']['impact'].sum() < 0.243/2 or (x['impact'] >= 0.243/2).sum() != x['impact'].size:
-            x.loc[:,'raw_ingredient'].iat[x[x['raw_ingredient'] != 'Other']['impact'].idxmin()] = 'Other'    #turn smallest ingredients name to "Other"
-            x = x.groupby('raw_ingredient')['impact'].sum()
+        while x[x['name'] == 'Other']['impact'].sum() < 0.243/2 or (x['impact'] >= 0.243/2).sum() != x['impact'].size:
+            x.loc[:,'name'].iat[x[x['name'] != 'Other']['impact'].idxmin()] = 'Other'    #turn smallest ingredients name to "Other"
+            x = x.groupby('name')['impact'].sum()
             x.sort_values(ascending=False, inplace=True)
             x = x.reset_index()
 
     # Set 'Other' to bottom of list
-    m = x['raw_ingredient'] != 'Other'
+    m = x['name'] != 'Other'
     x[m].append(x[~m]).reset_index(drop = True)
 
     # Turn df into dict for graph
-    data = {x['raw_ingredient'][i]: x['impact'][i] for i in range(len(x['impact']))}
+    data = {x['name'][i]: x['impact'][i] for i in range(len(x['impact']))}
 
     # Define labels for legend, wrap at 25 characters
     labels = ["{0} ({1}%)".format(k, round(100 * v/sum([v for k,v in data.items()]))) for k, v in data.items()]
@@ -47,60 +46,31 @@ def waffleplot(df_parsed, en = True):
 
     # Define colors
     num_colors = len(labels)
-    cm = pylab.get_cmap('RdYlGn')
+    cm = pylab.get_cmap('Spectral')
     clist = [cm(1.*i/num_colors) for i in range(num_colors)]
 
     # Define values and title
-    values = [x / 0.243 for x in list(data.values())]
-    title = f'Total recipe: Each car represents driving\n1 kilometer with a petrol car ({round(totalghg/0.243,1)} in total)'
-
-    # Changing car size and row count based on total GHG
-    if totalghg/0.243 <= 60:
-        iconsize = 40
-        row_count = 6
-    elif totalghg/(0.243/2):
-        iconsize = 20
-        row_count = 12
-    else:
-        iconsize = 10
-        row_count = 24
-
-    # Plot
+    #all_val = sum(data.values())
+    values = [round(data, 2) for data in data.values()]
+    barWidth = 1
+    plt.figure(dpi=1200)
     fig = plt.figure(
-        FigureClass=Waffle,
-        figsize = (24,8),
-        title = {
-        'label': title,
-        'loc': 'left',
-        'pad': 10,
-        'color': 'white',
-        'style': 'italic',
-        'fontdict': {
-            'fontsize': 30
-        }},
-        rows=row_count,
-        values=values,
-        colors=clist,
-        labels=labelswrapped,
-        #rounding_rule='ceil',
-        icons='car-side',
-        icon_size=iconsize,
-        icon_legend=True,
-        vertical = False,
-        block_arranging_style='new-line',
-        legend={
-        'loc': 'upper left',
-        'bbox_to_anchor': (0, -.1),
-        'ncol': 2,
-        'fontsize': 14,
-        'facecolor': '#466d1d',
-        'edgecolor': 'white',
-        'labelcolor': 'white',
-        #'borderpad': .5
-        }
-    )
+    figsize = (1.5,2))
 
+    plt.axis('off')
+    bars = values[0]
+    plt.bar(0, values[0], color=clist[0], edgecolor='white', width=barWidth, label = x['name'][0])
+    plt.text(0, values[0]/2, values[0], ha="center", va="center", fontsize=5, fontweight="bold")
+
+
+    bars = values[0]
+    for i in range(1,len(values)):
+        plt.bar(0, values[i], bottom=bars, color=clist[i], edgecolor='white', width=barWidth, label = x['name'][i])
+        plt.text(0, bars+ values[i]/2, values[i], ha="center", va="center", fontsize=5, fontweight="bold")
+        bars += values[i]
+    plt.legend( fontsize=5, loc = 'lower center', bbox_to_anchor=(-0.7, bars/i-.1))
     fig.gca().set_facecolor('#466d1d')
     fig.set_facecolor('#466d1d')
+
 
     return plt.show()

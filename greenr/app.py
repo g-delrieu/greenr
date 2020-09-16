@@ -19,7 +19,7 @@ st.beta_set_page_config(
  )
 ###########################################
 st.title('GREENR!')
-st.subheader('*A click closer to a greener plate*')
+#st.subheader('*A click closer to a greener plate*')
 
 ###########################################
 

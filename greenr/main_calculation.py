@@ -38,6 +38,8 @@ def calculate(url):
     else:
         print('invalid input')
 
+    print(df_parsed)
+
 
     categories = matching.get_categories(df_parsed, try_google = True)
 
