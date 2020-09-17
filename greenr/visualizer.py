@@ -50,10 +50,13 @@ def waffleplot(df_parsed, en = True):
     labels = ["{0} ({1}%)".format(k, round(100 * v/sum([v for k,v in data.items()]))) for k, v in data.items()]
     labelswrapped = [ '\n'.join(wrap(l, 40)) for l in labels]
 
+    selection = alt.selection_multi(fields=['Ingredients'], bind='legend')
     chart = alt.Chart(x).configure(background = '#466d1d' ).mark_bar(size = 100).encode(
     alt.Y('sum(impact)', axis = None),
     color = alt.Color('Ingredients', scale=alt.Scale(scheme='spectral', domain = list(x.Ingredients))),
-    order = alt.Order('impact:N', sort='descending')).configure_view(strokeOpacity=0)
+    order = alt.Order('impact:N', sort='descending'),
+    opacity = alt.condition(selection, alt.value(1), alt.value(0.2))).configure_view(strokeOpacity=0).add_selection(
+    selection)
 
     chart = chart.configure_legend(padding=70,
                            orient='left',
