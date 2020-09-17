@@ -88,7 +88,7 @@ if url:
 
         # Calling main calculation function & fetching chart
         out = main_calculation.calculate(url.strip())
-        plt = visualizer.waffleplot(out[1], en = out[-1])
+        chart = visualizer.waffleplot(out[1], en = out[-1])
 
         # Cleaning up loading indicators
         load_runner.empty()
@@ -102,15 +102,11 @@ if url:
 
         st.text("")
 
-        plt = plt
-        st.pyplot()
+        st.altair_chart(chart, use_container_width=True)
 
-        st.markdown(f'<p style = "text-align:center"> \
-            Offset the carbon impact of your recipe by donating to \
-            <a href="https://www.coolearth.org/" target = "_top"> \
-            coolearth.org! \
-            </a> \
-            \nIf you want to try another recipe, press [R] to refresh the page. \
+        st.markdown(f'<p style = "text-align:center" color="pink"> \
+            Offset the carbon impact of your recipe by donating to www.coolearth.org.\n \
+            To try another recipe, press [R] to refresh the page. \
             </p>',
             unsafe_allow_html=True,)
 
