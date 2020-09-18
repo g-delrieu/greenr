@@ -196,7 +196,7 @@ def get_match_and_score(summary_vector):
 
 def get_google_match(ingredient):
 
-    print(get_google_cse_result)
+    print(get_google_cse_result(ingredient))
 
     try:
         ingredient, url, url_base = get_google_cse_result(ingredient)
