@@ -60,6 +60,8 @@ def is_ingredient_in_database(ingredient):
 
     found = mycol.find({"ingredient":ingredient}).count() >0
 
+    print(f'ingredient in db? {found}')
+
     return found
 
 
@@ -193,6 +195,8 @@ def get_match_and_score(summary_vector):
 
 
 def get_google_match(ingredient):
+
+    print(get_google_cse_result)
 
     try:
         ingredient, url, url_base = get_google_cse_result(ingredient)
