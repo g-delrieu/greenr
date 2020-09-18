@@ -41,19 +41,21 @@ def waffleplot(df_parsed, en = True):
     # Set 'Other' to bottom of list
     m = x['Ingredients'] != 'Other'
     x[m].append(x[~m]).reset_index(drop = True)
+    total = x['impact'].sum()
+    x['CO2 per Ingredient:'] = x['Ingredients'] + ': ' + (round(x['impact']/total*100)).astype(int).astype(str) + "%"
     print(x)
 
     # Turn df into dict for graph
-    data = {x['Ingredients'][i]: x['impact'][i] for i in range(len(x['impact']))}
+    data = {x['CO2 per Ingredient:'][i]: x['impact'][i] for i in range(len(x['impact']))}
 
     # Define labels for legend, wrap at 25 characters
     labels = ["{0} ({1}%)".format(k, round(100 * v/sum([v for k,v in data.items()]))) for k, v in data.items()]
     labelswrapped = [ '\n'.join(wrap(l, 40)) for l in labels]
 
-    selection = alt.selection_multi(fields=['Ingredients'], bind='legend')
+    selection = alt.selection_multi(fields=['CO2 per Ingredient:'], bind='legend')
     chart = alt.Chart(x).configure(background = '#466d1d' ).mark_bar(size = 100).encode(
     alt.Y('sum(impact)', axis = None),
-    color = alt.Color('Ingredients', scale=alt.Scale(scheme='spectral', domain = list(x.Ingredients))),
+    color = alt.Color('CO2 per Ingredient:', scale=alt.Scale(scheme='spectral', domain = list(x['CO2 per Ingredient:']))),
     order = alt.Order('impact:N', sort='descending'),
     opacity = alt.condition(selection, alt.value(1), alt.value(0.2))).configure_view(strokeOpacity=0).add_selection(
     selection)
