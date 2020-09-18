@@ -111,7 +111,7 @@ if url:
             unsafe_allow_html=True,)
 
         st.markdown(f'<p style = "text-align:center" color="pink">\
-          Credit: Georges Delrieu, Yannick Louwerse, Nick Pinaire & Florencia Rimanoczy')
+          Credit: Georges Delrieu, Yannick Louwerse, Nick Pinaire & Florencia Rimanoczy  </p>')
 
     except:
 
