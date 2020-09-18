@@ -67,7 +67,9 @@ def waffleplot(df_parsed, en = True):
                            titleFont = "IBM Plex Mono",
                            titleFontSize = 20,
                            titleFontWeight = 'bold',
-                           labelFontSize = 15)
+                           titleLimit = 0,
+                           labelFontSize = 15,
+                           labelLimit= 0)
 
 
 
