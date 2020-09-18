@@ -110,6 +110,8 @@ if url:
             </p>',
             unsafe_allow_html=True,)
 
+        st.markdown(f'Credit: Georges Delrieu, Yannick Louwerse, Nick Pinaire & Florencia Rimanoczy'
+
     except:
 
         # Cleaning up loading indicators
