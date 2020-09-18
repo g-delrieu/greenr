@@ -60,8 +60,6 @@ def is_ingredient_in_database(ingredient):
 
     found = mycol.find({"ingredient":ingredient}).count() >0
 
-    print(f'ingredient in db? {found}')
-
     return found
 
 
@@ -157,22 +155,6 @@ def pre_process_summary(summary):
     # Remove digits
     summary = ''.join([word for word in summary if not word.isdigit()])
 
-    # Lemmatize
-    #lemmatizer = WordNetLemmatizer()
-
-    #summary = ' '.join(
-    #    [lemmatizer.lemmatize(word) for word in summary.split(' ')])
-
-    # Keep only nouns
-    #tokens = summary.split()
-    #tags = nltk.pos_tag(tokens)
-
-    #summary = [
-    #    word for word, pos in tags
-    #    if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS')
-    #]
-
-    #summary = ' '.join(summary)
 
     return summary
 
@@ -195,8 +177,6 @@ def get_match_and_score(summary_vector):
 
 
 def get_google_match(ingredient):
-
-    print(get_google_cse_result(ingredient))
 
     try:
         ingredient, url, url_base = get_google_cse_result(ingredient)
@@ -232,7 +212,6 @@ def update_database(ingredient, match):
 def get_categories(df_parser_output, try_google=False):
 
     matched_categories = []
-    #import pdb; pdb.set_trace()
 
     list_of_ingredients = list(df_parser_output['name'])
     target_ingredients = set(ingredient.lower() for ingredient in category_list)

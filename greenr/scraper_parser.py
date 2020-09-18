@@ -42,7 +42,7 @@ def get_ingredients_url(url):
     recipe_title = soup.find('h1', class_ = 'gel-trafalgar content-title__text').get_text()
 
     try:
-        servingsize = (float(servingsize[0])+float(servingsize[-1]))/2
+        servingsize = re.search("\d+", servingsize).group(0)
     except:
         pass
 
@@ -166,6 +166,7 @@ def parse_recipe_ingredients(ingredient_list):
         sent = sent.replace('aubergine', 'eggplant')
         sent = sent.replace('free-range', '')
         sent = sent.replace('salt', '')
+        sent = sent.replace('sea salt', '')
         sent = sent.replace('black pepper', '')
 
         if re.search("\dg", sent) is not None:
