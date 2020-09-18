@@ -38,7 +38,7 @@ def get_ingredients_url(url):
         ingredient += a.get_text()+ '.'
         ingredient += '\n'
 
-    servingsize = soup.find('p', class_ = "recipe-metadata__serving").get_text().split(' ')[1]
+    servingsize = soup.find('p', class_ = "recipe-metadata__serving").get_text()
     recipe_title = soup.find('h1', class_ = 'gel-trafalgar content-title__text').get_text()
 
     try:
