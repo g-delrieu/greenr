@@ -42,11 +42,12 @@ def get_ingredients_url(url):
     recipe_title = soup.find('h1', class_ = 'gel-trafalgar content-title__text').get_text()
 
     try:
-        servingsize = str(servingsize).split('-')[0]
+        servingsize = (float(servingsize[0])+float(servingsize[-1]))/2
     except:
         pass
 
     return ingredient, servingsize, recipe_title
+
 
 def sent2labels(sent):
     return [word[-1] for word in sent]
