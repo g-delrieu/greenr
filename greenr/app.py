@@ -104,13 +104,14 @@ if url:
 
         st.altair_chart(chart, use_container_width=True)
 
-        st.markdown(f'<p style = "text-align:center" color="pink"> \
-            Offset the carbon impact of your recipe by donating to www.coolearth.org.\n \
+        st.markdown(f'<p style = "text-align:center"> \
+            Offset the carbon impact of your recipe by donating to\
+            <a style = "color: #5CABAD" href="https://www.coolearth.org/">Cool Earth</a>. \n \
             To try another recipe, press [R] to refresh the page. \
             </p>',
             unsafe_allow_html=True,)
 
-        st.markdown(f'<p style = "text-align:center" color="pink">\
+        st.markdown(f'<p style = "text-align:center; color:#9CBA7F">\
           Credit: Georges Delrieu, Yannick Louwerse, Nick Pinaire & Florencia Rimanoczy  </p>', unsafe_allow_html=True)
 
     except:
