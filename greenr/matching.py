@@ -44,9 +44,8 @@ with open('matching_objects2.pk', 'rb') as handle:
     vectorizer = matching_objects_dict['vectorizer']
     df_wiki_match_scores = matching_objects_dict['df_wiki_match_scores']
     category_list = matching_objects_dict['category_list']
-    category_summary_vectors = matching_objects_dict[
-        'category_summary_vectors']
     category_summaries = matching_objects_dict['category_summaries']
+    category_summary_vectors = vectorizer.transform(category_summaries)
 
 cse_id = "dd94ab4664d1ce589"
 similarity_cutoff = 0.1
@@ -160,11 +159,10 @@ def pre_process_summary(summary):
 
 
 def get_match_and_score(summary_vector):
-
+    category_summary_vectors = vectorizer.transform(category_summaries)
     scoreseries = []
 
     for j, _ in enumerate(category_summaries):
-
         cosine_sum = 1 - spatial.distance.cosine(
             summary_vector.toarray(), category_summary_vectors[j, :].toarray())
 
