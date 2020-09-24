@@ -70,6 +70,7 @@ def calculate(url):
     if en:
         df_parsed['raw_ingredient'] = raw_ingredient_list[:-1]
         out = (round(ghg_impact_sum/int(servingsize),1), df_parsed, recipe_title, url, True)
+        updating_database_bbc(out)
     else:
         out = (round(ghg_impact_sum,1), df_parsed, url, False)
 
