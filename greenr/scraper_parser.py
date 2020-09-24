@@ -132,93 +132,101 @@ def parse_ingredient(sent):
 
     return parsed_ingredient
 
-
-
 def parse_recipe_ingredients(ingredient_list):
 
     """Wrapper around parse_ingredient so we can call it on an ingredient list"""
     sentences = tokenizer.tokenize(ingredient_list)
     sentences = [sent.strip('\n') for sent in sentences]
     names = []
-    qtys = []
-    units = []
+    qtys = {}
+    units = {}
     our_punctuation = '!"#$%&\'())*+:;<=>?@[\\]^_`{|}~'
+    our_units = ['gram', 'milliliters', 'thigh', 'wing', 'breast']
 
-    for sent in sentences:
+    for i in range(len(sentences)):
         for punctuation in our_punctuation:
         # cleaning for common issues
-            sent = sent.replace(punctuation, '')
+            sentences[i] = sentences[i].replace(punctuation, '')
 
-        sent = sent.replace('can', '')
-        sent = sent.replace('package', '')
-        sent = sent.replace('container', '')
-        sent = sent.replace('eggs eggs', 'eggs')
-        sent = sent.replace('⅓', '.33')
-        sent = sent.replace('½', '.5')
-        sent = sent.replace('¼', '.25')
-        sent = sent.replace('¾', '.75')
-        sent = sent.replace('tsp', 'teaspoon')
-        sent = sent.replace('tbsp', 'tablespoon')
-        sent = sent.replace('large', '')
-        sent = sent.replace('medium', '')
-        sent = sent.replace('small', '')
-        sent = sent.replace('kg', '000g')
-        sent = sent.replace('aubergine', 'eggplant')
-        sent = sent.replace('free-range', '')
-        sent = sent.replace('salt', '')
-        sent = sent.replace('sea salt', '')
-        sent = sent.replace('black pepper', '')
+        sentences[i] = sentences[i].replace('can', '')
+        sentences[i] = sentences[i].replace('package', '')
+        sentences[i] = sentences[i].replace('container', '')
+        sentences[i] = sentences[i].replace('eggs eggs', 'eggs')
+        sentences[i] = sentences[i].replace('⅓', '.33')
+        sentences[i] = sentences[i].replace('½', '.5')
+        sentences[i] = sentences[i].replace('¼', '.25')
+        sentences[i] = sentences[i].replace('¾', '.75')
+        sentences[i] = sentences[i].replace('tsp', 'teaspoon')
+        sentences[i] = sentences[i].replace('tbsp', 'tablespoon')
+        sentences[i] = sentences[i].replace('large', '')
+        sentences[i] = sentences[i].replace('medium', '')
+        sentences[i] = sentences[i].replace('small', '')
+        sentences[i] = sentences[i].replace('kg', '000g')
+        sentences[i] = sentences[i].replace('aubergine', 'eggplant')
+        sentences[i] = sentences[i].replace('free-range', '')
 
-        if re.search("\dg", sent) is not None:
-            sent = sent.replace("g", "gram", 1)
+        if re.search("\dg", sentences[i]) is not None:
+            sentences[i] = sentences[i].replace("g", "gram", 1)
 
 
-        parsed_ingredient = parse_ingredient(sent)
+        parsed_ingredient = parse_ingredient(sentences[i])
 
+        ## filling names
         if 'name' in parsed_ingredient[0].keys():
 
             tmp = parsed_ingredient[0]['name']
             useless_quantifiers = ['oz', 'fl', 'ounce']
 
             try:
-                names.append(re.search("[^\d]*$", tmp).group(0))
+                names = re.search("[^\d]*$", tmp).group(0)
             except:
-                names.append(tmp)
+                names = tmp
 
         else:
-            names.append(np.nan)
+            names = np.nan
 
-        if 'gram' in parsed_ingredient[0]['input']:
-            units.append('gram')
-        elif 'milliliters' in parsed_ingredient[0]['input']:
-            units.append('ml')
-        elif 'unit' in parsed_ingredient[0].keys():
-            units.append(parsed_ingredient[0]['unit'])
-        #elif 'kg' or 'kilogram' in parsed_ingredient[0]['input']:
-        #   units.append('kilogram')
-        else:
-            units.append('unit')
+        ##filling units
+        #import pdb; pdb.set_trace()
+        for unit in our_units:
+            if unit in parsed_ingredient[0]['input']:
+                units[names] = unit
+            elif 'unit' in parsed_ingredient[0].keys():
+                units[names] = parsed_ingredient[0]['unit']
+        try:
+            units[names]
+        except:
+            units[names] = 'unit'
 
-        if re.search("\dg", sent) is not None:
+        ##filling quantities
+        if re.search("\dg", sentences[i]) is not None:
             try:
-                qtys.append(re.search("\d+(?=\s*g)", parsed_ingredient[0]['input']).group(0))
+                qtys[names] = re.search("\d+(?=\s*g)", parsed_ingredient[0]['input']).group(0)
             except:
                 pass
-        elif re.search("\dkg", sent) is not None:
+        elif re.search("\dkg", sentences[i]) is not None:
             try:
-                qtys.append(re.search("\d+(?=\s*kg)", parsed_ingredient[0]['input']).group(0))
+                qtys[names] = re.search("\d+(?=\s*kg)", parsed_ingredient[0]['input']).group(0)
             except:
                 pass
         elif 'qty' in parsed_ingredient[0].keys():
-            qtys.append(parsed_ingredient[0]['qty'])
+            qtys[names] = parsed_ingredient[0]['qty']
         else:
             try:
-                qtys.append(float(parsed_ingredient[0]['input'][:3]))
+                qtys[names] = float(parsed_ingredient[0]['input'][:3])
             except:
-                qtys.append(np.nan)
+                qtys[names] = np.nan
 
 
-    final_df = pd.DataFrame(list(zip(qtys, units, names)), columns = ['qty', 'unit', 'name'])
+    ## collating all elements together
+    names_list = []
+    units_list = []
+    qtys_list = []
+    for key in units.keys():
+        names_list.append(key)
+        qtys_list.append(qtys[key])
+        units_list.append(units[key])
+
+    final_df = pd.DataFrame(list(zip(qtys_list, units_list, names_list)), columns = ['qty', 'unit', 'name'])
 
     final_df = final_df[final_df['name'] != '']
     final_df = final_df[final_df['name'].notna()]
