@@ -141,7 +141,7 @@ def parse_recipe_ingredients(ingredient_list):
     qtys = {}
     units = {}
     our_punctuation = '!"#$%&\'())*+:;<=>?@[\\]^_`{|}~'
-    our_units = ['gram', 'milliliters', 'thigh', 'wing', 'breast']
+    our_units = ['gram', 'milliliters', 'thigh', 'wing', 'breast', 'drumstick', 'fillet']
 
     for i in range(len(sentences)):
         for punctuation in our_punctuation:
