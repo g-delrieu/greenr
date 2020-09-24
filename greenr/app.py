@@ -87,8 +87,12 @@ if url:
     try:
 
         # Calling main calculation function & fetching chart
+
         out = main_calculation.calculate(url.strip())
-        chart = visualizer.waffleplot(out[1], en = out[-1])
+        print(out)
+        rec = main_calculation.finding_better_recipe(out)
+        print(rec)
+        chart = visualizer.waffleplot(out, rec, en = out[-1])
 
         # Cleaning up loading indicators
         load_runner.empty()
@@ -96,7 +100,7 @@ if url:
 
         # Showing main result
         if out[-1]:
-            st.header(f'**{out[2]}:** {out[0]} kg of CO2 per serving')
+            st.header(f'**{out[3]}:** {out[0]} kg of CO2 per serving')
         else:
             st.header(f'**Recipe impact:** {out[0]} kg of CO2')
 
