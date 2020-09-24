@@ -4,7 +4,7 @@ import re
 data = pd.read_csv('data/Final_conversion_table.csv')
 
 data = data.drop(['Average tablespoon (grams)', 'Source', 'Average Unit (if applicable) (grams)', 'Source.1'], axis = 1)
-data.columns = ['name','tablespoon','unit','ghg']
+data.columns = ['name','tablespoon','unit','wing','breast','drumstick','thigh','chop','fillet','ghg']
 data = data.set_index('name')
 
 def ghg_calc(df):
@@ -18,6 +18,16 @@ def ghg_calc(df):
                 impact.append(float(df.qty[i])*float(data.tablespoon[df.category[i]])*float(data.ghg[df.category[i]]))
             elif df.unit[i] == 'unit':
                 impact.append(float(df.qty[i])*float(data.unit[df.category[i]])*float(data.ghg[df.category[i]]))
+            elif df.unit[i] == 'wing':
+                impact.append(float(df.qty[i])*float(data.wing[df.category[i]])*float(data.ghg[df.category[i]]))
+            elif df.unit[i] == 'breast':
+                impact.append(float(df.qty[i])*float(data.breast[df.category[i]])*float(data.ghg[df.category[i]]))
+            elif df.unit[i] == 'drumstick':
+                impact.append(float(df.qty[i])*float(data.drumstick[df.category[i]])*float(data.ghg[df.category[i]]))
+            elif df.unit[i] == 'thigh':
+                impact.append(float(df.qty[i])*float(data.thigh[df.category[i]])*float(data.ghg[df.category[i]]))
+            elif df.unit[i] == 'chop':
+                impact.append(float(df.qty[i])*float(data.chop[df.category[i]])*float(data.ghg[df.category[i]]))
             elif df.unit[i] == 'fillet':
                 impact.append(float(df.qty[i])*float(data.unit[df.category[i]])*float(data.ghg[df.category[i]]))
             elif df.unit[i] == 'gram':
@@ -36,3 +46,6 @@ def ghg_calc(df):
     impact = [x if str(x) != 'nan' else 0 for x in impact]
 
     return sum(impact), impact
+
+
+
