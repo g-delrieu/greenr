@@ -30,7 +30,7 @@ def updating_database_bbc(out):
 
     if mycol.find({"url":out[3]}).count() == 0:
 
-        mydict = {"impact": out[0], "title": out[2], "url": out[3]}
+        mydict = {"impact": out[0], "title": out[3], "url": out[4]}
 
         mycol.insert_one(mydict)
 
