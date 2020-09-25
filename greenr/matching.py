@@ -178,18 +178,19 @@ def get_google_match(ingredient):
 
     try:
         ingredient, url, url_base = get_google_cse_result(ingredient)
+
+        pageid = get_pageid_from_base(url_base)
+
+        pagesummary = get_summary_from_id(pageid)
+
+        processed_summary = pre_process_summary(pagesummary)
+
+        summary_vector = vectorizer.transform([processed_summary])
+
+        match, matchscore = get_match_and_score(summary_vector)
+
     except:
         return 'nomatch', 0
-
-    pageid = get_pageid_from_base(url_base)
-
-    pagesummary = get_summary_from_id(pageid)
-
-    processed_summary = pre_process_summary(pagesummary)
-
-    summary_vector = vectorizer.transform([processed_summary])
-
-    match, matchscore = get_match_and_score(summary_vector)
 
     return match, matchscore
 

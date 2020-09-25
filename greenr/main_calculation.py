@@ -65,6 +65,7 @@ def calculate(url):
 
     df_parsed['category'] = categories
 
+    print(df_parsed)
 
     ghg_impact_sum, impact_list = calculator.ghg_calc(df_parsed)
 
