@@ -18,8 +18,12 @@ def waffleplot(out, rec, en = True):
 
     df_parsed = out[1]
     servingsize = out[2]
-    recipe_title = out[3]
+    your_title = out[3]
+    your_title = ['Your recipe:',' '.join(your_title.split()[:4]), ' '.join(your_title.split()[4:8]), ' '.join(your_title.split()[8:])]
+    my_title = rec['title']
+    my_title = ['Our recommendation:', ' '.join(my_title.split()[:4]), ' '.join(my_title.split()[4:8]), ' '.join(my_title.split()[8:])]
     url = out[4]
+
 
     df_parsed = df_parsed.sort_values('impact')
     df_parsed = df_parsed.rename(columns={"name": "Ingredients"})
@@ -44,7 +48,7 @@ def waffleplot(out, rec, en = True):
     x['impact'] = x['impact']/float(servingsize)
     total = x['impact'].sum()
     x['CO2 per Ingredient:'] = x['Ingredients'] + ': ' + (round(x['impact']/total*100)).astype(int).astype(str) + "%"
-    x['source'] = recipe_title
+    x['source'] = out[3]
     x['url'] = url
     x = x.append(pd.DataFrame([['All',rec['impact'],rec['title'] + ': 100%',rec['title'], rec['url']]], columns = x.columns)).reset_index(drop = True)
 
@@ -55,8 +59,7 @@ def waffleplot(out, rec, en = True):
     labels = ["{0} ({1}%)".format(k, round(100 * v/sum([v for k,v in data.items()]))) for k, v in data.items()]
     labelswrapped = [ '\n'.join(wrap(l, 40)) for l in labels]
 
-    print(x)
-    recipe_title = x['source'][0]
+    # Graphing
     selection = alt.selection_multi(fields=['CO2 per Ingredient:'], bind='legend')
     chart1 = alt.Chart(x[:-1]).mark_bar(size = 100).encode(
     alt.Y('sum(impact)', scale=alt.Scale(domain=[0, total]), axis = None),
@@ -66,7 +69,7 @@ def waffleplot(out, rec, en = True):
     href = "url",
     opacity = alt.condition(selection, alt.value(1), alt.value(0.2))).add_selection(selection).properties(width = 250,
                                                                                                           height = 250,
-                                                                                                          title = {"text": ['Your recipe:', x["source"][0]],
+                                                                                                          title = {"text": your_title,
                                                                                                                    "color": "white",
                                                                                                                    "fontSize": 20
                                                                                                                     })
@@ -79,7 +82,7 @@ def waffleplot(out, rec, en = True):
     href = "url",
     opacity = alt.condition(selection, alt.value(1), alt.value(0.2))).add_selection(selection).properties(width = 250,
                                                                                  height = 250,
-                                                                                 title = {"text": ['A greener option:', x['source'].iloc[-1]],
+                                                                                 title = {"text": my_title,
                                                                                           "color": "white",
                                                                                           "fontSize": 20})
 
