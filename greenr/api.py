@@ -8,10 +8,12 @@ def login():
     if request.method == "POST":
         url = request.form['url']
         score = main_calculation.calculate(url)
+        rec = main_calculation.finding_better_recipe(score)
         return jsonify({"footprint per serving" : score[0],
                         "all_data" : score[1].to_json(orient="split"),
                         "title": score[3],
-                        "url": score[4]})
+                        "url": score[4],
+                        "recommended recipe" : rec["title"]})
     else:
         return render_template("login.html")
 

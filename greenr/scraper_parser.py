@@ -298,3 +298,9 @@ def chefkoch_to_list(url):
     for ing in ing_list:
         de_list.append(Translator().translate(ing, src ='de').text)
     return de_list
+
+
+#### Unstructured text:
+def unstructured_to_df(text):
+
+    return parse_recipe_ingredients(text.replace("\n", ".\n"))
