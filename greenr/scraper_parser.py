@@ -255,11 +255,13 @@ def url_to_df(url):
 #### parser for Marmiton:
 def marmiton_to_df(url):
 
-    page = requests.get(f'https://www.marmiton.org/recettes/recette_pizza-burrata-et-basilic_528367.aspx')
+    page = requests.get(f'{url}')
     soup = BeautifulSoup(page.content, 'html.parser')
     tmp = soup.find_all('script', type = "text/javascript")
     ingredient = json.loads(re.search('(?<=recipesData \= )(.*?)(?=;)', str(tmp)).group(0))['recipes'][0]['ingredients']
-
+    servingsize = float(re.search("(?<=recipeServings': )(.*)(?=,)", str(tmp)).group(0))
+    recipe_title = re.search("(?<=recipeTitle': ')(.*)(?=',)", str(tmp)).group(0)
+    raw_ingredients = re.search("(?<=recipeIngredients': ')(.*)(?=',)", str(tmp)).group(0).strip().split(',')
 
     #translating
     translator = Translator()
@@ -286,7 +288,7 @@ def marmiton_to_df(url):
     final_df = final_df[final_df['unit'].notna()]
     final_df = final_df[final_df['unit'] != 'teaspoon']
 
-    return final_df
+    return final_df, servingsize, raw_ingredients, recipe_title
 
 #### scraper for Chefkoch:
 def chefkoch_to_list(url):

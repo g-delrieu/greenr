@@ -60,7 +60,7 @@ instruct_text = st.empty()
 
 url = inputbar.text_input("", "")
 
-instruct_text.text('Paste any URL to a recipe page on bbc.co.uk (EN), chefkoch.de (DE) or marmiton.org (FR),\ne.g.: https://www.bbc.co.uk/food/recipes/salmonburgerswithbas_86430')
+instruct_text.text('Paste any URL to a recipe page on bbc.co.uk (EN) or marmiton.org (FR),\ne.g.: https://www.bbc.co.uk/food/recipes/salmonburgerswithbas_86430')
 
 if url:
 

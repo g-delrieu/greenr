@@ -54,18 +54,16 @@ def calculate(url):
 
     elif o.netloc == 'www.marmiton.org':
         try:
-            df_parsed = scraper_parser.marmiton_to_df(url)
+            df_parsed, servingsize, raw_ingredient_list, recipe_title = scraper_parser.marmiton_to_df(url)
         except:
             print('invalid input')
     else:
         print('invalid input')
 
-
+    #mport pdb; pdb.set_trace()
     categories = matching.get_categories(df_parsed, try_google = True)
 
     df_parsed['category'] = categories
-
-    print(df_parsed)
 
     ghg_impact_sum, impact_list = calculator.ghg_calc(df_parsed)
 
@@ -76,7 +74,8 @@ def calculate(url):
         out = (round(ghg_impact_sum/int(servingsize),1), df_parsed, servingsize, recipe_title, url, True)
         updating_database_bbc(out)
     else:
-        out = (round(ghg_impact_sum,1), df_parsed, servingsize, url, False)
+        print(round(ghg_impact_sum/int(servingsize),1))
+        out = (round(ghg_impact_sum/int(servingsize),1), df_parsed, servingsize, recipe_title, url, True)
 
     return out
 
