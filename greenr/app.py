@@ -110,7 +110,7 @@ if url:
 
         st.markdown(f'<p style = "text-align:center"> \
             Offset the carbon impact of your recipe by donating to\
-            <a style = "color: #5CABAD" href="https://www.coolearth.org/">Cool Earth</a>. \n \
+            <a style = "color: #5CABAD" href="https://www.coolearth.org/ target="_blank">Cool Earth</a>. \n \
             To try another recipe, press [R] to refresh the page. \
             </p>',
             unsafe_allow_html=True,)
